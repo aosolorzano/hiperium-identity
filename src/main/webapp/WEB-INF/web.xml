@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER. OssTown Corp. 
+	Corp. Product: Hiperium<description>Hiperium Project for Smart Homes</description> 
+	Created: 12-Mar-2011 - 00:00:00 The contents of this file are copyrighted 
+	by OssTown Corp. and it is protected by the license: "GPL V3." You can find 
+	a copy of this license at: http://www.osstown.com/hiperium/licence.html Copyright 
+	2013. All rights reserved. -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	
+    <!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- ***************************  GENERAL  ************************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<description>Hiperium Project for Smart Homes</description>
+	<display-name>hiperium-security</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************  FILTERS  *************************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- ACCESS CONTROL FILTERS -->
+	<filter>
+		<filter-name>CorsFilter</filter-name>
+		<filter-class>com.hiperium.security.common.filter.CorsFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter>
+		<filter-name>JsonpFilter</filter-name>
+		<filter-class>com.hiperium.security.common.filter.JsonpFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter>
+		<filter-name>TokenFilter</filter-name>
+		<filter-class>com.hiperium.security.common.filter.TokenFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- **********************  FILTER MAPPINGS  *********************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- ACCESS CONTROL FILTER MAPPINGS -->
+	<filter-mapping>
+		<filter-name>CorsFilter</filter-name>
+		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>JsonpFilter</filter-name>
+		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>TokenFilter</filter-name>
+		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************  SECURITY  ************************** -->
+	<!-- **************************************************************** -->
+	<!-- **************************************************************** -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	<security-constraint>
+		<display-name>Force the use of a secure connection</display-name>
+		<web-resource-collection>
+			<web-resource-name>Viewpoint Secure URLs</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+</web-app>

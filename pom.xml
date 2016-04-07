@@ -1,0 +1,383 @@
+<?xml version="1.0"?>
+<!--DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER. Hiperium Corp. 
+	Corp. Product: Hiperium<description>Hiperium Project for Smart Homes</description> 
+	Created: 13-Ago-2015 - 00:00:00 The contents of this file are copyrighted 
+	by OssTown Corp. and it is protected by the license: "GPL V3." You can find 
+	a copy of this license at: http://www.hiperium.com/hiperium/licence.html 
+	Copyright 2015. All rights reserved. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.hiperium</groupId>
+	<artifactId>hiperium-identity</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Hiperium Security</name>
+	<description>Hiperium identity service to manage user credentials and control access to resources.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven.min.version>3.0.0</maven.min.version>
+		<arquillian.core.version>1.1.11.Final</arquillian.core.version>
+		<arquillian.wildfly.version>8.2.1.Final</arquillian.wildfly.version>
+		<org.resteasy.version>3.0.14.Final</org.resteasy.version>
+		<io.undertow.websockets.version>1.3.16.Final</io.undertow.websockets.version>
+		<maven.surface.plugin.version>2.19.1</maven.surface.plugin.version>
+	</properties>
+
+	<prerequisites>
+		<maven>${maven.min.version}</maven>
+	</prerequisites>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3</name>
+			<distribution>repo</distribution>
+			<url>http://www.gnu.org/copyleft/gpl.html</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Hiperium Corporation</name>
+		<url>http://www.hiperium.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>asolorzano</id>
+			<name>Andres Solorzano</name>
+			<email>andres.solorzano@hiperium.com</email>
+			<organization>Hiperium Corporation</organization>
+			<roles>
+				<role>Hiperium Project Architect</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+	</developers>
+
+	<repositories>
+		<repository>
+			<id>hiperium</id>
+			<name>Hiperium Project Public Repository</name>
+			<url>http://repository-hiperium.rhcloud.com/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>hiperium</id>
+			<name>Hiperium Project Public Repository</name>
+			<url>http://repository-hiperium.rhcloud.com/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!-- Deploy the project in the follow Public Nexus Repository. -->
+	<distributionManagement>
+		<repository>
+			<id>hiperium</id>
+			<name>Hiperium Releases</name>
+			<url>http://repository-hiperium.rhcloud.com/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>hiperium</id>
+			<name>Hiperium Snapshots</name>
+			<url>http://repository-hiperium.rhcloud.com/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Dependencies for the Java EE 7 Specification -->
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-7.0</artifactId>
+				<version>1.0.3.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Dependencies for Arquillian Testing Framework -->
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${arquillian.core.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- Import the Hiperium Common Services dependency. -->
+		<dependency>
+			<groupId>com.hiperium</groupId>
+			<artifactId>hiperium-common-services</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- Import the CDI API provided in WildFly -->
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the JAX-RS API provided in WildFly -->
+		<dependency>
+        	<groupId>org.jboss.spec.javax.ws.rs</groupId>
+        	<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+        	<scope>provided</scope>
+    	</dependency>
+		<!-- Import the Annotations API provided in WildFly -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the JPA API provided in WildFly -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the EJB API provided in WildFly -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the Servlet API provided in WildFly -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the MAIL API provided in WildFly -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Import the Javax Validation API provided in WildFly -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- APACHE CASSANDRA -->
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-mapping</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+		<!-- Make Arquillian work with JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surface.plugin.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven.surface.plugin.version}</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <linkXRef>true</linkXRef>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>wildfly-managed-arquillian</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<serverProfile>standalone.xml</serverProfile>
+				<serverRoot>${project.build.directory}/wildfly-${arquillian.wildfly.version}</serverRoot>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>io.undertow</groupId>
+					<artifactId>undertow-websockets-jsr</artifactId>
+					<version>${io.undertow.websockets.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-client</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxb-provider</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-json-p-provider</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-arquillian-container-managed</artifactId>
+					<version>${arquillian.wildfly.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+						<filtering>true</filtering>
+					</testResource>
+				</testResources>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>2.10</version>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>process-test-classes</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>${arquillian.wildfly.version}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>${project.build.directory}</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven.surface.plugin.version}</version>
+						<configuration>
+							<environmentVariables>
+								<JBOSS_HOME>${project.build.directory}/wildfly-${arquillian.wildfly.version}</JBOSS_HOME>
+							</environmentVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>wildfly-remote-arquillian</id>
+			<dependencies>
+				<dependency>
+					<groupId>io.undertow</groupId>
+					<artifactId>undertow-websockets-jsr</artifactId>
+					<version>${io.undertow.websockets.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-client</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxb-provider</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-json-p-provider</artifactId>
+					<version>${org.resteasy.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-arquillian-container-remote</artifactId>
+					<version>${arquillian.wildfly.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+						<filtering>true</filtering>
+					</testResource>
+				</testResources>
+			</build>
+		</profile>
+	</profiles>
+</project>
+

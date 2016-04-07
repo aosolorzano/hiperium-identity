@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Open Source Solutions Town. Product: Hiperium Created: 09-08-2013 - 
+	09:00:00 The contents of this file are copyrighted by OssTown Corporation 
+	and it is protected by the license: "GPL V3." You can find a copy of this 
+	license at: http://www.osstown.com Copyright 2013 OssTown Corp. All rights 
+	reserved. -->
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	<named-query name="Home.findSelectionByUserId">
+		<query>
+			SELECT NEW com.hiperium.common.services.dto.SelectionDTO(h.home.id, h.home.name) 
+				FROM UserHome h WHERE h.pk.userId = :userId
+		</query>
+	</named-query>
+	<named-query name="Home.isCloudEnable">
+		<query>
+			SELECT h.cloudEnable FROM Home h WHERE h.id = :homeId
+		</query>
+	</named-query>
+	<named-query name="User.findByEmail">
+		<query>
+			SELECT u FROM User u WHERE u.email = :userEmail
+		</query>
+	</named-query>
+	<named-query name="Profile.findByUserAndHomeId">
+		<query>
+			SELECT NEW com.hiperium.common.services.dto.SelectionDTO(p.id, p.name) 
+				FROM UserProfile up JOIN up.profile p
+				WHERE up.pk.userId    = :userId
+				AND   p.homeId        = :homeId 
+		</query>
+	</named-query>
+	<named-query name="ProfileFunctionalityVO.findByProfileAndURL">
+		<query>
+			SELECT NEW com.hiperium.security.common.vo.ProfileFunctionalityVO(pf.pk.functionalityId, pf.hourFrom, pf.hourUntil) 
+				FROM ProfileFunctionality pf JOIN pf.functionality f 
+				WHERE pf.pk.profileId = :profileId
+				AND f.url = :url
+		</query>
+	</named-query>
+	<named-query name="HomeGateway.validateHomeApplication">
+		<query>
+			SELECT gw.id FROM HomeGateway gw 
+				WHERE gw.homeId = :homeId 
+				AND   gw.serial = :serial
+		</query>
+	</named-query>
+	<named-query name="HomeGateway.findTokenByHomeId">
+		<query>
+			SELECT ut.token FROM HomeGateway ut WHERE ut.homeId = :homeId
+		</query>
+	</named-query>
+	<named-query name="Profile.findNextSequential">
+		<query>
+			SELECT COUNT(a.id) FROM Profile a
+		</query>
+	</named-query>
+	<named-query name="UserHome.findByUserId">
+		<query>
+			SELECT a FROM UserHome a WHERE a.pk.userId = :userId
+		</query>
+	</named-query>
+	<named-query name="ProfileFunctionality.findByProfileId">
+		<query>
+			SELECT a FROM ProfileFunctionality a WHERE a.pk.profileId = :profileId
+		</query>
+	</named-query>
+</entity-mappings>

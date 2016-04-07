@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Open Source Solutions Town. Product: Hiperium Created: 09-08-2013 - 
+	09:00:00 The contents of this file are copyrighted by OssTown Corporation 
+	and it is protected by the license: "GPL V3." You can find a copy of this 
+	license at: http://www.osstown.com Copyright 2013 OssTown Corp. All rights 
+	reserved. -->
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	<package>com.hiperium.security.model.security</package>
+	<entity class="Home">
+		<table name="sec_home" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+			<basic name="name">
+				<column name="name" length="100" nullable="false" />
+			</basic>
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<basic name="cloudEnable">
+				<column name="cloud_enabled" nullable="false" />
+			</basic>
+			<basic name="protectedMode">
+				<column name="protected_mode" nullable="false" />
+			</basic>
+			<basic name="comments">
+				<column name="comments" length="300" />
+			</basic>
+			<version name="version">
+				<column name="version" length="8" />
+			</version>
+		</attributes>
+	</entity>
+	<entity class="Profile">
+		<table name="sec_profile" />
+		<attributes>
+			<id name="id" />
+			<basic name="homeId">
+				<column name="home_id" nullable="false" />
+			</basic>
+			<basic name="name">
+				<column name="name" length="100" nullable="false" />
+			</basic>
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<basic name="comments">
+				<column name="comments" length="300" />
+			</basic>
+			<version name="version">
+				<column name="version" length="8" />
+			</version>
+		</attributes>
+	</entity>
+	<entity class="ProfileFunctionality">
+		<table name="sec_profile_functionality" />
+		<attributes>
+			<embedded-id name="pk" />
+			<basic name="allowInsert">
+				<column name="allow_insert" nullable="false" />
+			</basic>
+			<basic name="allowUpdate">
+				<column name="allow_update" nullable="false" />
+			</basic>
+			<basic name="allowDelete">
+				<column name="allow_delete" nullable="false" />
+			</basic>
+			<basic name="hourFrom">
+				<column name="hour_from" nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="hourUntil">
+				<column name="hour_until" nullable="false" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<many-to-one name="functionality" maps-id="functionalityId">
+				<join-column name="functionality_id" referenced-column-name="id" />
+			</many-to-one>
+		</attributes>
+	</entity>
+	<entity class="User">
+		<table name="sec_user">
+			<unique-constraint name="email">
+				<column-name>email</column-name>
+			</unique-constraint>
+		</table>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+			<basic name="email">
+				<column name="email" length="100" nullable="false" />
+			</basic>
+			<basic name="firstname">
+				<column name="firstname" length="300" nullable="false" />
+			</basic>
+			<basic name="lastname">
+				<column name="lastname" length="300" nullable="false" />
+			</basic>
+			<basic name="password">
+				<column name="password" length="300" nullable="false" />
+			</basic>
+			<basic name="languageId">
+				<column name="language_id" length="2" nullable="false" />
+			</basic>
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<basic name="mobilePhoneNumber">
+				<column name="mobile_phone_number" length="30" />
+			</basic>
+			<basic name="comments">
+				<column name="comments" length="300" />
+			</basic>
+			<version name="version">
+				<column name="version" length="8" />
+			</version>
+		</attributes>
+	</entity>
+	<entity class="UserHome">
+		<table name="sec_user_home" />
+		<attributes>
+			<embedded-id name="pk" />
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<many-to-one name="home" maps-id="homeId">
+				<join-column name="home_id" referenced-column-name="id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+	<entity class="UserProfile">
+		<table name="sec_user_profile" />
+		<attributes>
+			<embedded-id name="pk" />
+			<basic name="active">
+				<column name="active" nullable="false" />
+			</basic>
+			<many-to-one name="profile" maps-id="profileId">
+				<join-column name="profile_id" referenced-column-name="id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+	<entity class="HomeGateway">
+		<table name="sec_home_gateway" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+			<basic name="homeId">
+				<column name="home_id" nullable="false" />
+			</basic>
+			<basic name="name">
+				<column name="name" length="100" nullable="false" />
+			</basic>
+			<basic name="serial">
+				<column name="serial" length="50" nullable="false" />
+			</basic>
+			<basic name="token">
+				<column name="token" length="50" nullable="false" />
+			</basic>
+		</attributes>
+	</entity>
+	<entity class="Functionality">
+		<table name="sec_functionality" />
+		<attributes>
+			<id name="id" />
+			<basic name="name">
+				<column name="name" length="100" nullable="false" />
+			</basic>
+			<basic name="url">
+				<column name="url" length="100" nullable="false" />
+			</basic>
+			<basic name="restURI">
+				<column name="rest_uri" length="100" nullable="false" />
+			</basic>
+			<basic name="soapURI">
+				<column name="soap_auri" length="100" nullable="false" />
+			</basic>
+			<basic name="handleInsertions">
+				<column name="handle_insertions" nullable="false" />
+			</basic>
+			<basic name="handlesUpdates">
+				<column name="handles_updates" nullable="false" />
+			</basic>
+			<basic name="handleDeletions">
+				<column name="handle_deletions" nullable="false" />
+			</basic>
+			<basic name="comments">
+				<column name="comments" length="300" />
+			</basic>
+		</attributes>
+	</entity>
+	
+	<embeddable class="UserHomePK">
+		<attributes>
+			<basic name="userId">
+				<column name="user_id" nullable="false" />
+			</basic>
+			<basic name="homeId">
+				<column name="home_id" nullable="false" />
+			</basic>
+		</attributes>	
+	</embeddable>
+	<embeddable class="UserProfilePK">
+		<attributes>
+			<basic name="userId">
+				<column name="user_id" nullable="false" />
+			</basic>
+			<basic name="profileId">
+				<column name="profile_id" nullable="false" />
+			</basic>
+		</attributes>	
+	</embeddable>
+	<embeddable class="ProfileFunctionalityPK">
+		<attributes>
+			<basic name="functionalityId">
+				<column name="functionality_id" nullable="false" />
+			</basic>
+			<basic name="profileId">
+				<column name="profile_id" nullable="false" />
+			</basic>
+		</attributes>	
+	</embeddable>
+</entity-mappings>

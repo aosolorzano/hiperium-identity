@@ -8,8 +8,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
 	version="2.1">
-	<package>com.hiperium.security.model.security</package>
-	<entity class="Home">
+	<package>com.hiperium.identity.model.security</package>
+	<entity class="com.hiperium.identity.model.security.Home">
 		<table name="sec_home" />
 		<attributes>
 			<id name="id">
@@ -35,7 +35,7 @@
 			</version>
 		</attributes>
 	</entity>
-	<entity class="Profile">
+	<entity class="com.hiperium.identity.model.security.Profile">
 		<table name="sec_profile" />
 		<attributes>
 			<id name="id" />
@@ -56,7 +56,7 @@
 			</version>
 		</attributes>
 	</entity>
-	<entity class="ProfileFunctionality">
+	<entity class="com.hiperium.identity.model.security.ProfileFunctionality">
 		<table name="sec_profile_functionality" />
 		<attributes>
 			<embedded-id name="pk" />
@@ -85,7 +85,7 @@
 			</many-to-one>
 		</attributes>
 	</entity>
-	<entity class="User">
+	<entity class="com.hiperium.identity.model.security.User">
 		<table name="sec_user">
 			<unique-constraint name="email">
 				<column-name>email</column-name>
@@ -124,7 +124,7 @@
 			</version>
 		</attributes>
 	</entity>
-	<entity class="UserHome">
+	<entity class="com.hiperium.identity.model.security.UserHome">
 		<table name="sec_user_home" />
 		<attributes>
 			<embedded-id name="pk" />
@@ -136,7 +136,7 @@
 			</many-to-one>
 		</attributes>
 	</entity>
-	<entity class="UserProfile">
+	<entity class="com.hiperium.identity.model.security.UserProfile">
 		<table name="sec_user_profile" />
 		<attributes>
 			<embedded-id name="pk" />
@@ -148,7 +148,7 @@
 			</many-to-one>
 		</attributes>
 	</entity>
-	<entity class="HomeGateway">
+	<entity class="com.hiperium.identity.model.security.HomeGateway">
 		<table name="sec_home_gateway" />
 		<attributes>
 			<id name="id">
@@ -168,7 +168,7 @@
 			</basic>
 		</attributes>
 	</entity>
-	<entity class="Functionality">
+	<entity class="com.hiperium.identity.model.security.Functionality">
 		<table name="sec_functionality" />
 		<attributes>
 			<id name="id" />
@@ -199,7 +199,7 @@
 		</attributes>
 	</entity>
 	
-	<embeddable class="UserHomePK">
+	<embeddable class="com.hiperium.identity.model.security.UserHomePK">
 		<attributes>
 			<basic name="userId">
 				<column name="user_id" nullable="false" />
@@ -209,7 +209,7 @@
 			</basic>
 		</attributes>	
 	</embeddable>
-	<embeddable class="UserProfilePK">
+	<embeddable class="com.hiperium.identity.model.security.UserProfilePK">
 		<attributes>
 			<basic name="userId">
 				<column name="user_id" nullable="false" />
@@ -219,7 +219,7 @@
 			</basic>
 		</attributes>	
 	</embeddable>
-	<embeddable class="ProfileFunctionalityPK">
+	<embeddable class="com.hiperium.identity.model.security.ProfileFunctionalityPK">
 		<attributes>
 			<basic name="functionalityId">
 				<column name="functionality_id" nullable="false" />

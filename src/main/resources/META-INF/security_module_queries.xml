@@ -34,7 +34,7 @@
 	</named-query>
 	<named-query name="ProfileFunctionalityVO.findByProfileAndURL">
 		<query>
-			SELECT NEW com.hiperium.security.common.vo.ProfileFunctionalityVO(pf.pk.functionalityId, pf.hourFrom, pf.hourUntil) 
+			SELECT NEW com.hiperium.identity.common.vo.ProfileFunctionalityVO(pf.pk.functionalityId, pf.hourFrom, pf.hourUntil) 
 				FROM ProfileFunctionality pf JOIN pf.functionality f 
 				WHERE pf.pk.profileId = :profileId
 				AND f.url = :url

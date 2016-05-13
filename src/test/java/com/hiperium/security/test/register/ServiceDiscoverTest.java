@@ -35,7 +35,7 @@ import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.restful.RegistrySecutityPath;
 import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
 import com.hiperium.common.services.restful.registry.ServiceRegister;
-import com.hiperium.security.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestSecurityPath;
 
 /**
  * 
@@ -93,7 +93,7 @@ public class ServiceDiscoverTest {
     			SERVER_HOST,
 				RestSecurityPath.SECURITY_CONTEXT_ROOT, 
 				RestSecurityPath.SECURITY_PATH, 
-				RestSecurityPath.SESSION_MANAGER.concat(RestSecurityPath.IS_USER_LOGGED_IN));
+				RestSecurityPath.AUTHENTICATION.concat(RestSecurityPath.IS_USER_LOGGED_IN));
 		ServiceRegister server;
 		try {
 			// CURATOR CLIENT PART FOR REGISTERING SERVICES

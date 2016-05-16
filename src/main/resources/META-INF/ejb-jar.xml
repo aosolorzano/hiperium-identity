@@ -8,8 +8,8 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
 	version="3.2">
-	<module-name>hiperium-security</module-name>
-	<display-name>hiperium-security</display-name>
+	<module-name>hiperium-identity</module-name>
+	<display-name>hiperium-identity</display-name>
 	<assembly-descriptor>
 		<application-exception>
 			<exception-class>com.hiperium.common.exception.InformationException</exception-class>

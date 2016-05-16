@@ -24,7 +24,7 @@ import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.module.ProfileFunctionalityBO;
 import com.hiperium.identity.model.security.ProfileFunctionality;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 
@@ -35,7 +35,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestSecurityPath.PROFILE_FUNCTIONALITY)
+@Path(RestIdentityPath.PROFILE_FUNCTIONALITY)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class ProfileFunctionalityResource extends GenericResource<ProfileFunctionality> {
@@ -55,7 +55,7 @@ public class ProfileFunctionalityResource extends GenericResource<ProfileFunctio
 	 * @throws InformationException
 	 */
 	@PUT
-	@Path(RestSecurityPath.UPDATE)
+	@Path(RestIdentityPath.UPDATE)
 	public ProfileFunctionality update(ProfileFunctionality register) 
 			throws InformationException {
 		this.log.debug("homeSelection - " + register);

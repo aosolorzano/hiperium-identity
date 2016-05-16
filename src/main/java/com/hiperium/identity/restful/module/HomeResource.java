@@ -28,7 +28,7 @@ import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.module.HomeBO;
 import com.hiperium.identity.model.security.Home;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -37,7 +37,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestSecurityPath.HOMES)
+@Path(RestIdentityPath.HOMES)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class HomeResource extends GenericResource<Home> {
@@ -56,7 +56,7 @@ public class HomeResource extends GenericResource<Home> {
 	 * @throws InformationException
 	 */
 	@GET
-	@Path(RestSecurityPath.FIND_HOME_USER_BY_ID)
+	@Path(RestIdentityPath.FIND_HOME_USER_BY_ID)
 	public List<SelectionDTO> findByUserId(@QueryParam("userId") Long userId) throws InformationException {
 		this.log.debug("findByUserId - START");
 		return this.homeBO.findByUserId(userId, super.getTokenId());

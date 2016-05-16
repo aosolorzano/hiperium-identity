@@ -34,7 +34,7 @@ import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.RegistryAuditPath;
+import com.hiperium.common.services.restful.AuditRegistryPath;
 import com.hiperium.common.services.restful.audit.AuditService;
 import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
@@ -77,7 +77,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 		this.serializer = new JsonInstanceSerializer<ServiceDetailsDTO>(ServiceDetailsDTO.class); // Payload Serializer
 		this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceDetailsDTO.class)
 				.client(this.curatorClient)
-				.basePath(RegistryAuditPath.BASE_PATH)
+				.basePath(AuditRegistryPath.BASE_PATH)
 				.serializer(this.serializer)
 				.build();
 	}
@@ -87,7 +87,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	 */
 	public void updateHomeSelection(@NotNull SessionRegister sessionRegister, String token) throws Exception {
 		this.log.debug("updateHomeSelection - START");
-		this.auditService.updateHomeSelection(this.getServiceURI(RegistryAuditPath.UPDATE_SESSION_REGISTER_HOME_SELECTION), sessionRegister, token);
+		this.auditService.updateHomeSelection(this.getServiceURI(AuditRegistryPath.UPDATE_SESSION_REGISTER_HOME_SELECTION), sessionRegister, token);
 		this.log.debug("updateHomeSelection - END");
 	}
 	
@@ -96,7 +96,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	 */
 	public void updateLogoutDate(@NotNull SessionRegister sessionRegister, String token) throws Exception {
 		this.log.debug("updateLogoutDate - START");
-		this.auditService.updateLogoutDate(this.getServiceURI(RegistryAuditPath.UPDATE_SESSION_REGISTER_LOGOUT_DATE), sessionRegister.getId(), token);
+		this.auditService.updateLogoutDate(this.getServiceURI(AuditRegistryPath.UPDATE_SESSION_REGISTER_LOGOUT_DATE), sessionRegister.getId(), token);
 		this.log.debug("updateLogoutDate - END");
 	}
 
@@ -105,7 +105,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	 */
 	public UserStatistic findUserStatisticById(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("findById - START");
-		return this.auditService.findByUserStatisticId(this.getServiceURI(RegistryAuditPath.FIND_USER_STATISTIC_BY_USER_ID), userId, token);
+		return this.auditService.findByUserStatisticId(this.getServiceURI(AuditRegistryPath.FIND_USER_STATISTIC_BY_USER_ID), userId, token);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	 */
 	public void updateLastPasswordChange(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("updateLastPasswordChange - START");
-		this.auditService.updateLastPasswordChange(this.getServiceURI(RegistryAuditPath.UPDATE_LAST_USER_PASS_BY_USER_ID), userId, token); 
+		this.auditService.updateLastPasswordChange(this.getServiceURI(AuditRegistryPath.UPDATE_LAST_USER_PASS_BY_USER_ID), userId, token); 
 		this.log.debug("updateLastPasswordChange - END");
 	}
 	

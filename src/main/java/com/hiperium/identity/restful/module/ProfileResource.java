@@ -37,7 +37,7 @@ import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.module.ProfileBO;
 import com.hiperium.identity.common.dto.ProfileParamsDTO;
 import com.hiperium.identity.model.security.Profile;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 
@@ -48,7 +48,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestSecurityPath.PROFILES)
+@Path(RestIdentityPath.PROFILES)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class ProfileResource extends GenericResource<Profile> {
@@ -72,7 +72,7 @@ public class ProfileResource extends GenericResource<Profile> {
 	 * @throws InformationException
 	 */
 	@POST
-	@Path(RestSecurityPath.CREATE)
+	@Path(RestIdentityPath.CREATE)
 	public void create(ProfileParamsDTO paramsDTO)
 			throws WebApplicationException, InformationException {
 		this.log.debug("create - START");
@@ -86,7 +86,7 @@ public class ProfileResource extends GenericResource<Profile> {
 	 * @throws InformationException
 	 */
 	@PUT
-	@Path(RestSecurityPath.UPDATE)
+	@Path(RestIdentityPath.UPDATE)
 	public Profile update(ProfileParamsDTO paramsDTO)
 			throws WebApplicationException, InformationException {
 		this.log.debug("homeSelection - START");
@@ -101,7 +101,7 @@ public class ProfileResource extends GenericResource<Profile> {
 	 * @throws InformationException
 	 */
 	@DELETE
-	@Path(RestSecurityPath.DELETE)
+	@Path(RestIdentityPath.DELETE)
 	public void delete(@QueryParam("profileId") Long profileId) 
 			throws WebApplicationException, InformationException {
 		this.log.debug("delete - " + profileId);
@@ -114,7 +114,7 @@ public class ProfileResource extends GenericResource<Profile> {
 	 * @throws InformationException
 	 */
 	@GET
-	@Path(RestSecurityPath.FIND_PROFILE_BY_HOME_ID)
+	@Path(RestIdentityPath.FIND_PROFILE_BY_HOME_ID)
 	public List<SelectionDTO> findByHomeId(@QueryParam("homeId") Long homeId)
 			throws InformationException {
 		this.log.debug("findByHomeId - START");

@@ -40,12 +40,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
-import com.hiperium.common.services.dto.HomeAuthResponseDTO;
+import com.hiperium.common.services.dto.HomeResponseDTO;
 import com.hiperium.common.services.dto.HomeCredentialDTO;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.exception.PropertyValidationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.vo.SessionAuditVO;
+import com.hiperium.common.services.vo.UserSessionVO;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.ApplicationUserBO;
@@ -55,7 +55,7 @@ import com.hiperium.identity.common.dto.HomeSelectionDTO;
 import com.hiperium.identity.common.dto.UserAuthResponseDTO;
 import com.hiperium.identity.common.dto.UserCredentialDTO;
 import com.hiperium.identity.model.security.User;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -64,7 +64,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  *
  * @author Andres Solorzano
  */
-@Path(RestSecurityPath.AUTHENTICATION)
+@Path(RestIdentityPath.AUTHENTICATION)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class AuthenticationResource extends GenericResource<UserAuthResponseDTO> {
@@ -102,7 +102,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
      * @throws PropertyValidationException
      */
     @POST
-    @Path(RestSecurityPath.USER_AUTH)
+    @Path(RestIdentityPath.USER_AUTH)
     public UserAuthResponseDTO userAuthentication(@NotNull UserCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("userAuthentication - BEGIN");
@@ -160,8 +160,8 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
      * @throws PropertyValidationException
      */
     @POST
-    @Path(RestSecurityPath.HOME_AUTH)
-    public HomeAuthResponseDTO homeAuthentication(@NotNull HomeCredentialDTO credentialsDTO) 
+    @Path(RestIdentityPath.HOME_AUTH)
+    public HomeResponseDTO homeAuthentication(@NotNull HomeCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("homeAuthentication - BEGIN");
        
@@ -183,7 +183,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
  		
  		// Find the JBoss Application User credentials to be send to the Raspberry for Queue connections.
  		List<String> register = this.applicationUserBO.findByRole("hiperium");
- 		HomeAuthResponseDTO dto = new HomeAuthResponseDTO();
+ 		HomeResponseDTO dto = new HomeResponseDTO();
  		dto.setParam1(register.get(0));
  		dto.setParam2(register.get(1));
  		dto.setParam3(sessionRegister.getTokenId());
@@ -246,7 +246,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws WebApplicationException
 	 */
 	@GET
-	@Path(RestSecurityPath.IS_USER_LOGGED_IN)
+	@Path(RestIdentityPath.IS_USER_LOGGED_IN)
 	public Response isUserLoggedIn() throws WebApplicationException {
 		this.log.debug("isUserLoggedIn - BEGIN");
 		HttpSession session = this.servletRequest.getSession(false);
@@ -264,16 +264,16 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws WebApplicationException
 	 */
 	@GET
-	@Path(RestSecurityPath.GET_SESSION_AUDIT_VO)
+	@Path(RestIdentityPath.GET_SESSION_AUDIT_VO)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public SessionAuditVO getSessionAuditVO() throws WebApplicationException {
+	public UserSessionVO getSessionAuditVO() throws WebApplicationException {
 		this.log.debug("getSessionAuditVO - BEGIN");
-		SessionAuditVO sessionAuditVO = null;
+		UserSessionVO sessionAuditVO = null;
 		SessionRegister sessionRegister = this.getSessionRegister(super.getTokenId());
 		if(sessionRegister == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		} else {
-			sessionAuditVO = new SessionAuditVO(
+			sessionAuditVO = new UserSessionVO(
 					sessionRegister.getUserId(),
 					sessionRegister.getHomeId(),
 					sessionRegister.getProfileId(),
@@ -290,7 +290,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @return
 	 */
 	@GET
-	@Path(RestSecurityPath.LOGOUT)
+	@Path(RestIdentityPath.LOGOUT)
 	public Response logout() {
 		this.log.debug("logout - BEGIN");
 		if(StringUtils.isNotBlank(super.getTokenId())) {

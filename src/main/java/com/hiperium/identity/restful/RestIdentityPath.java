@@ -16,7 +16,7 @@ package com.hiperium.identity.restful;
  * 
  * @author Andres Solorzano
  */
-public final class RestSecurityPath {
+public final class RestIdentityPath {
 
 	// ***************************************************************** //
 	// ***************************************************************** //
@@ -24,8 +24,8 @@ public final class RestSecurityPath {
 	// ***************************************************************** //
 	// ***************************************************************** //
 
-	/** The property SECURITY_CONTEXT_ROOT with value /hiperium-security. */
-	public static final String SECURITY_CONTEXT_ROOT = "/hiperium-security";
+	/** The property IDENTITY_CONTEXT_ROOT with value /hiperium-identity. */
+	public static final String IDENTITY_CONTEXT_ROOT = "/hiperium-identity";
 
 	// ***************************************************************** //
 	// ***************************************************************** //
@@ -33,8 +33,8 @@ public final class RestSecurityPath {
 	// ***************************************************************** //
 	// ***************************************************************** //
 
-	/** The property SECURITY_PATH with value /api/security. */
-	public static final String SECURITY_PATH = "/api/security";
+	/** The property IDENTITY_PATH with value /api/identity. */
+	public static final String IDENTITY_PATH = "/api/identity";
 
 	// ***************************************************************** //
 	// ***************************************************************** //

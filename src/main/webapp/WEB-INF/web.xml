@@ -16,7 +16,7 @@
 	<!-- **************************************************************** -->
 	<!-- **************************************************************** -->
 	<description>Hiperium Project for Smart Homes</description>
-	<display-name>hiperium-security</display-name>
+	<display-name>hiperium-identity</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
@@ -62,19 +62,19 @@
 	<!-- ACCESS CONTROL FILTER MAPPINGS -->
 	<filter-mapping>
 		<filter-name>CorsFilter</filter-name>
-		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<url-pattern>/api/identity/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>JsonpFilter</filter-name>
-		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<url-pattern>/api/identity/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>TokenFilter</filter-name>
-		<url-pattern>/web/service/rest/security/*</url-pattern>
+		<url-pattern>/api/identity/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>

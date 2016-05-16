@@ -26,7 +26,7 @@ import com.hiperium.common.services.dto.ApplicationUserDTO;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.module.ApplicationUserBO;
 import com.hiperium.identity.model.security.Home;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -35,7 +35,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestSecurityPath.APPLICATION_USER)
+@Path(RestIdentityPath.APPLICATION_USER)
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class ApplicationUserResource extends GenericResource<Home> {
 

@@ -74,7 +74,7 @@ public class ConfigurationBean {
 	private static final Properties PROPERTIES = new Properties();
 	
 	/** The property entityManger. */
-	@PersistenceContext(unitName = "hiperiumSecurityPU")
+	@PersistenceContext(unitName = "hiperiumIdentityPU")
 	private EntityManager entityManager;
 
 	/** Cassandra Cluster. */

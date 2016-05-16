@@ -32,10 +32,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.RegistrySecutityPath;
+import com.hiperium.common.services.restful.IdentityRegistryPath;
 import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
 import com.hiperium.common.services.restful.registry.ServiceRegister;
-import com.hiperium.identity.restful.RestSecurityPath;
+import com.hiperium.identity.restful.RestIdentityPath;
 
 /**
  * 
@@ -51,8 +51,8 @@ public class ServiceDiscoverTest {
 	 */
 	@Deployment(testable = false)
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class, "security-service-test.war").addClasses(
-        		RestSecurityPath.class
+        return ShrinkWrap.create(WebArchive.class, "identity-service-test.war").addClasses(
+        		RestIdentityPath.class
         );
     }
 	
@@ -61,6 +61,7 @@ public class ServiceDiscoverTest {
 	
 	private static final String ZK_HOST = "app.hiperium.com:2181";
 	public static final String SERVER_HOST = "app.hiperium.com";
+	public static final Integer SERVER_PORT = 8081;
 	
 	private CuratorFramework curatorClient;
 	private ServiceDiscovery<ServiceDetailsDTO> serviceDiscovery;
@@ -91,14 +92,14 @@ public class ServiceDiscoverTest {
     	LOGGER.info("queryService() - START");
     	String serviceURI = String.format("{scheme}://%s:{port}%s%s%s", 
     			SERVER_HOST,
-				RestSecurityPath.SECURITY_CONTEXT_ROOT, 
-				RestSecurityPath.SECURITY_PATH, 
-				RestSecurityPath.AUTHENTICATION.concat(RestSecurityPath.IS_USER_LOGGED_IN));
+				RestIdentityPath.IDENTITY_CONTEXT_ROOT, 
+				RestIdentityPath.IDENTITY_PATH, 
+				RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.IS_USER_LOGGED_IN));
 		ServiceRegister server;
 		try {
 			// CURATOR CLIENT PART FOR REGISTERING SERVICES
-			server = new ServiceRegister(this.curatorClient, 8080, serviceURI, RegistrySecutityPath.IS_USER_LOGGED_IN, 
-					RegistrySecutityPath.BASE_PATH, "Service that verifies if the user token exists.", "1.0");
+			server = new ServiceRegister(this.curatorClient, SERVER_PORT, serviceURI, IdentityRegistryPath.IS_USER_LOGGED_IN, 
+					IdentityRegistryPath.BASE_PATH, "Service that verifies if the user token exists.", "1.0");
 			server.start();
 			this.registers.add(server);
 			LOGGER.debug("Service added to the Registry: " + serviceURI);
@@ -107,12 +108,12 @@ public class ServiceDiscoverTest {
 			this.serializer = new JsonInstanceSerializer<ServiceDetailsDTO>(ServiceDetailsDTO.class); // Payload Serializer
     		this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceDetailsDTO.class)
 					.client(this.curatorClient)
-					.basePath(RegistrySecutityPath.BASE_PATH)
+					.basePath(IdentityRegistryPath.BASE_PATH)
 					.serializer(this.serializer)
 					.build();
-            final Collection<ServiceInstance<ServiceDetailsDTO>> services = this.serviceDiscovery.queryForInstances(RegistrySecutityPath.IS_USER_LOGGED_IN);
+            final Collection<ServiceInstance<ServiceDetailsDTO>> services = this.serviceDiscovery.queryForInstances(IdentityRegistryPath.IS_USER_LOGGED_IN);
             if(services == null || services.isEmpty()) {
-            	throw new Exception("No results found for querying services called: " + RegistrySecutityPath.IS_USER_LOGGED_IN);
+            	throw new Exception("No results found for querying services called: " + IdentityRegistryPath.IS_USER_LOGGED_IN);
             } else {
             	for(final ServiceInstance<ServiceDetailsDTO> service: services) {
                     final String uri = service.buildUriSpec();

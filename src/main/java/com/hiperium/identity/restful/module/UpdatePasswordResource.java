@@ -15,7 +15,6 @@ package com.hiperium.identity.restful.module;
 import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -84,13 +83,12 @@ public class UpdatePasswordResource extends GenericResource<UpdatePasswordDTO> {
 		}
 
 		// Get the session register from session.
-		HttpSession httpSession = this.servletRequest.getSession();
-		SessionRegister sessionRegister = (SessionRegister) httpSession.getAttribute(super.getTokenId());
+		SessionRegister sessionRegister = this.authenticationBO.findUserSessionRegister(super.getTokenId());
 		this.updatePasswordBO.updateUserPassword(sessionRegister.getUserId(), passwordDTO.getNewPassword(), 
 				passwordDTO.getPrevPassword(), super.getTokenId());
 
-		// Invalidates the session so the user needs to login again
-		httpSession.invalidate();
+		// Ends the user session
+		this.authenticationBO.endUserSession(super.getTokenId());
 		
 		this.log.debug("updatePassword - END");
 		return super.ok();

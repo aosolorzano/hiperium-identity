@@ -68,6 +68,7 @@ public class SessionRegisterDAOImpl implements SessionRegisterDAO {
 		this.log.debug("create() - BEGIN");
 		sessionRegister.setId(BeanUtils.uuidForDate(new Date()));
 		sessionRegister.setLoginDate(new Date());
+		//TODO: Implement JWT too.
 		sessionRegister.setTokenId("Bearer ".concat(UUID.randomUUID().toString()));
 		this.cassandraConnector.getSession().execute(this.createSessionRegisterBS.bind(
 				sessionRegister.getId(),

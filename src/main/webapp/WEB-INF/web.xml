@@ -84,13 +84,6 @@
 	<!-- **************************  SECURITY  ************************** -->
 	<!-- **************************************************************** -->
 	<!-- **************************************************************** -->
-	<session-config>
-		<session-timeout>15</session-timeout>
-		<cookie-config>
-			<http-only>true</http-only>
-		</cookie-config>
-		<tracking-mode>COOKIE</tracking-mode>
-	</session-config>
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>

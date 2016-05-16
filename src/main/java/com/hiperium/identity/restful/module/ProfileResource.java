@@ -16,8 +16,6 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,13 +25,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.dto.SelectionDTO;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.ProfileBO;
 import com.hiperium.identity.common.dto.ProfileParamsDTO;
 import com.hiperium.identity.model.security.Profile;
@@ -61,9 +59,9 @@ public class ProfileResource extends GenericResource<Profile> {
 	@EJB
 	private ProfileBO profileBO;
 	
-	/** The property servletRequest. */
-	@Context
-	private HttpServletRequest servletRequest;
+	/** The property authenticationBO. */
+	@EJB
+	private AuthenticationBO authenticationBO;
 	
 	/**
 	 * 
@@ -118,8 +116,7 @@ public class ProfileResource extends GenericResource<Profile> {
 	public List<SelectionDTO> findByHomeId(@QueryParam("homeId") Long homeId)
 			throws InformationException {
 		this.log.debug("findByHomeId - START");
-		HttpSession httpSession = this.servletRequest.getSession();
-		SessionRegister sessionRegister = (SessionRegister) httpSession.getAttribute(super.getTokenId());
+		SessionRegister sessionRegister = this.authenticationBO.findUserSessionRegister(super.getTokenId());
 		return this.profileBO.findByHomeId(homeId, sessionRegister.getUserId(), sessionRegister.getTokenId());
 	}
 

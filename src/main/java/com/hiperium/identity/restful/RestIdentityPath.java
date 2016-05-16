@@ -118,8 +118,8 @@ public final class RestIdentityPath {
 	/** The IS_USER_LOGGED_IN property path. */
 	public static final String IS_USER_LOGGED_IN = "/isUserLoggedIn";
 
-	/** The GET_SESSION_AUDIT_VO property path. */
-	public static final String GET_SESSION_AUDIT_VO = "/getSessionAuditVO";
+	/** The GET_USER_SESSION_VO property path. */
+	public static final String GET_USER_SESSION_VO = "/getUserSessionVO";
 
 	/** The END_SESSION property path. */
 	public static final String LOGOUT = "/logout";

@@ -13,16 +13,13 @@
 package com.hiperium.identity.restful.auth;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -36,12 +33,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
-import com.hiperium.common.services.dto.HomeResponseDTO;
 import com.hiperium.common.services.dto.HomeCredentialDTO;
+import com.hiperium.common.services.dto.HomeResponseDTO;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.exception.PropertyValidationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
@@ -50,7 +45,6 @@ import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.ApplicationUserBO;
 import com.hiperium.identity.bo.module.UserBO;
-import com.hiperium.identity.common.ConfigurationBean;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
 import com.hiperium.identity.common.dto.UserAuthResponseDTO;
 import com.hiperium.identity.common.dto.UserCredentialDTO;
@@ -112,15 +106,11 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 		if (!violations.isEmpty()) {
 			throw new PropertyValidationException(new HashSet<ConstraintViolation<UserCredentialDTO>>(violations));
 		}
+		
         // Creates a session register with a new HTTP session
         String userAgent = super.getServletRequest().getHeader("User-Agent");
         String remoteIpAddress = super.getServletRequest().getRemoteAddr();
         SessionRegister sessionRegister = this.authenticationBO.userAuthentication(credentialsDTO.getEmail(), credentialsDTO.getPassword(), userAgent, remoteIpAddress);
-        
-        // Add session register to the session map
-        HttpSession session = this.servletRequest.getSession();
-        session.setAttribute(sessionRegister.getTokenId(), sessionRegister);
-     	this.getHttpSessionMap().put(session.getId(), session);
      		
         // Construct the response
         User user = this.userBO.findById(sessionRegister.getUserId(), false, sessionRegister.getTokenId());
@@ -175,11 +165,6 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
         String userAgent = super.getServletRequest().getHeader("User-Agent");
         String remoteIpAddress = super.getServletRequest().getRemoteAddr();
         SessionRegister sessionRegister = this.authenticationBO.homeAuthentication(credentialsDTO.getId(), credentialsDTO.getSerial(), userAgent, remoteIpAddress);
-        
-        // Add session register to the session map
-        HttpSession session = this.servletRequest.getSession();
-        session.setAttribute(sessionRegister.getTokenId(), sessionRegister);
-     	this.getHttpSessionMap().put(session.getId(), session);
  		
  		// Find the JBoss Application User credentials to be send to the Raspberry for Queue connections.
  		List<String> register = this.applicationUserBO.findByRole("hiperium");
@@ -200,6 +185,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws PropertyValidationException
 	 */
 	@POST
+	@Path(RestIdentityPath.HOME_SELECTION)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response select(@NotNull HomeSelectionDTO homeSelectionDTO) throws InformationException, PropertyValidationException {
 		this.log.debug("select - BEGIN");
@@ -210,29 +196,8 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 			throw new PropertyValidationException(new HashSet<ConstraintViolation<HomeSelectionDTO>>(violations));
 		}
 		
-		// Get session register object from session map
-		SessionRegister sessionRegister = this.getSessionRegister(super.getTokenId());
-		sessionRegister.setHomeId(homeSelectionDTO.getHomeId());
-		sessionRegister.setProfileId(homeSelectionDTO.getProfileId());
-		
 		// Register the home and profile selection in the session.
-		sessionRegister = this.authenticationBO.homeSelection(sessionRegister, super.getTokenId());
-		
-		// Updates session register in the session map
-		HttpSession session = this.servletRequest.getSession();
-        session.setAttribute(sessionRegister.getTokenId(), sessionRegister);
-     	this.getHttpSessionMap().put(session.getId(), session);
-     	
-		// TODO: Add users of the same home to the session map. This because the device 
-		// platform needs to notify for an home event to connected users of the 
-		// same home.
-		/*if(this.homeUsersTokenMap.containsKey(sessionRegister.getHomeId())) {
-			this.homeUsersTokenMap.get(sessionRegister.getHomeId()).add(sessionRegister.getTokenId());
-		} else {
-			Set<String> sessionIds = new HashSet<String>();
-			sessionIds.add(sessionRegister.getTokenId());
-			this.homeUsersTokenMap.put(sessionRegister.getHomeId(), sessionIds);
-		}*/
+		this.authenticationBO.homeSelection(homeSelectionDTO, super.getTokenId());
 				
 		// Assigns the default profile and generates the menu 
 		this.log.debug("select - END");
@@ -249,8 +214,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	@Path(RestIdentityPath.IS_USER_LOGGED_IN)
 	public Response isUserLoggedIn() throws WebApplicationException {
 		this.log.debug("isUserLoggedIn - BEGIN");
-		HttpSession session = this.servletRequest.getSession(false);
-		if(session == null || session.getAttribute(super.getTokenId()) == null) {
+		if(!this.authenticationBO.isUserLoggedIn(super.getTokenId())) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isUserLoggedIn - END");
@@ -264,24 +228,12 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws WebApplicationException
 	 */
 	@GET
-	@Path(RestIdentityPath.GET_SESSION_AUDIT_VO)
+	@Path(RestIdentityPath.GET_USER_SESSION_VO)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public UserSessionVO getSessionAuditVO() throws WebApplicationException {
-		this.log.debug("getSessionAuditVO - BEGIN");
-		UserSessionVO sessionAuditVO = null;
-		SessionRegister sessionRegister = this.getSessionRegister(super.getTokenId());
-		if(sessionRegister == null) {
-			throw new WebApplicationException(Status.NOT_FOUND);
-		} else {
-			sessionAuditVO = new UserSessionVO(
-					sessionRegister.getUserId(),
-					sessionRegister.getHomeId(),
-					sessionRegister.getProfileId(),
-					sessionRegister.getIpConnection(),
-					sessionRegister.getAccessChannel(),
-					super.getTokenId());
-		}
-		this.log.debug("getSessionAuditVO - END");
+	public UserSessionVO getUserSessionVO() throws WebApplicationException {
+		this.log.debug("getUserSessionVO - BEGIN");
+		UserSessionVO sessionAuditVO = this.authenticationBO.findUserSessionVO(super.getTokenId());
+		this.log.debug("getUserSessionVO - END");
 		return sessionAuditVO;
 	}
 	
@@ -293,48 +245,8 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	@Path(RestIdentityPath.LOGOUT)
 	public Response logout() {
 		this.log.debug("logout - BEGIN");
-		if(StringUtils.isNotBlank(super.getTokenId())) {
-			SessionRegister sessionRegister = this.getSessionRegister(super.getTokenId());
-			if(sessionRegister != null) {
-				try {
-					this.auditManagerBO.updateLogoutDate(sessionRegister, sessionRegister.getTokenId());
-					HttpSession session = this.servletRequest.getSession();
-					session.invalidate(); // This calls SessionListener object to destroy session in the map.
-					// TODO: Remove the session from home session map too.
-					/*if(this.homeUsersTokenMap.containsKey(sessionRegister.getHomeId())) {
-						this.homeUsersTokenMap.get(sessionRegister.getHomeId()).remove(tokenId);
-						if(this.homeUsersTokenMap.get(sessionRegister.getHomeId()).isEmpty()) {
-							this.homeUsersTokenMap.remove(sessionRegister.getHomeId());
-						}
-					}*/
-				} catch (Exception e) {
-					this.log.error(e.getMessage());
-				}
-			}
-		}
+		this.authenticationBO.endUserSession(super.getTokenId());
 		this.log.debug("logout - END");
 		return Response.ok().build();
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private HashMap<String, HttpSession> getHttpSessionMap(){
-		ServletContext context = this.servletRequest.getServletContext();
-		HashMap<String, HttpSession> sessions = (HashMap<String, HttpSession>) context.getAttribute(ConfigurationBean.SESSION_MAP_NAME);
-		return sessions;
-	}
-	
-	/**
-	 * 
-	 * @param tokenId
-	 * @return
-	 */
-	private SessionRegister getSessionRegister(String tokenId) {
-		HttpSession session = this.servletRequest.getSession();
-		SessionRegister sessionRegister = (SessionRegister) session.getAttribute(tokenId);
-		return sessionRegister;
 	}
 }

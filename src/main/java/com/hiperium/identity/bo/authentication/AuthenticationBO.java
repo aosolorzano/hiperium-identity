@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.exception.InformationException;
+import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.identity.common.dto.HomeSelectionDTO;
 
 /**
  * 
@@ -53,12 +55,38 @@ public interface AuthenticationBO {
 
 	/**
 	 * 
-	 * @param sessionRegister
+	 * @param homeSelectionDTO
+	 * @param tokenId
+	 * @throws InformationException
+	 */
+	void homeSelection(@NotNull HomeSelectionDTO homeSelectionDTO, @NotNull String tokenId) throws InformationException;
+
+	/**
+	 * 
+	 * @param tokenId
+	 * @return
+	 */
+	boolean isUserLoggedIn(@NotNull String tokenId);
+
+	/**
+	 * 
+	 * @param tokenId
+	 * @return
+	 */
+	UserSessionVO findUserSessionVO(@NotNull String tokenId);
+
+	/**
+	 * 
+	 * @param tokenId
+	 */
+	void endUserSession(@NotNull String tokenId);
+
+	/**
+	 * 
 	 * @param tokenId
 	 * @return
 	 * @throws InformationException
 	 */
-	SessionRegister homeSelection(@NotNull SessionRegister sessionRegister, @NotNull String tokenId)
-			throws InformationException;
+	SessionRegister findUserSessionRegister(@NotNull String tokenId) throws InformationException;
 
 }

@@ -20,6 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven.min.version>3.0.0</maven.min.version>
+		<wildfly.version>10.0.0.Final</wildfly.version>
 		<arquillian.core.version>1.1.11.Final</arquillian.core.version>
 		<arquillian.wildfly.version>8.2.1.Final</arquillian.wildfly.version>
 		<org.resteasy.version>3.0.14.Final</org.resteasy.version>
@@ -127,6 +128,20 @@
 			<artifactId>hiperium-commons</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<!-- Import MSC to allow us to write WildFly services -->
+		<dependency>
+    		<groupId>org.jboss.msc</groupId>
+    		<artifactId>jboss-msc</artifactId>
+    		<version>1.2.6.Final</version>
+    		<scope>provided</scope>
+		</dependency>
+		<!-- Import Wildfly Clustering Singleton to allow to create a singleton service -->
+		<dependency>
+    		<groupId>org.wildfly</groupId>
+    		<artifactId>wildfly-clustering-singleton-api</artifactId>
+    		<version>${wildfly.version}</version>
+    		<scope>provided</scope>
+		</dependency>
 		<!-- Import the CDI API provided in WildFly -->
 		<dependency>
 			<groupId>javax.enterprise</groupId>
@@ -135,10 +150,10 @@
 		</dependency>
 		<!-- Import the JAX-RS API provided in WildFly -->
 		<dependency>
-        	<groupId>org.jboss.spec.javax.ws.rs</groupId>
-        	<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
-        	<scope>provided</scope>
-    	</dependency>
+			<groupId>org.jboss.spec.javax.ws.rs</groupId>
+			<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Import the Annotations API provided in WildFly -->
 		<dependency>
 			<groupId>org.jboss.spec.javax.annotation</groupId>
@@ -228,23 +243,23 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surface.plugin.version}</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven.surface.plugin.version}</version>
-                <configuration>
-                    <aggregate>true</aggregate>
-                    <linkXRef>true</linkXRef>
-                </configuration>
-            </plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surface.plugin.version}</version>
+				<configuration>
+					<systemPropertyVariables>
+						<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>${maven.surface.plugin.version}</version>
+				<configuration>
+					<aggregate>true</aggregate>
+					<linkXRef>true</linkXRef>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

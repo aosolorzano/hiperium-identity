@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.hiperium.identity.common.ConfigurationBean;
+import com.hiperium.identity.common.bean.ConfigurationBean;
 
 /**
  * Class that manages application context objects. Here we need to store the 

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.apache.log4j.Logger;
 
-import com.hiperium.identity.common.ConfigurationBean;
+import com.hiperium.identity.common.bean.ConfigurationBean;
 
 /**
  * This class represents the HTTP Session Listener to be used by the JSF

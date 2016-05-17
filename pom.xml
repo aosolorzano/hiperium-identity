@@ -130,17 +130,17 @@
 		</dependency>
 		<!-- Import MSC to allow us to write WildFly services -->
 		<dependency>
-    		<groupId>org.jboss.msc</groupId>
-    		<artifactId>jboss-msc</artifactId>
-    		<version>1.2.6.Final</version>
-    		<scope>provided</scope>
+			<groupId>org.jboss.msc</groupId>
+			<artifactId>jboss-msc</artifactId>
+			<version>1.2.6.Final</version>
+			<scope>provided</scope>
 		</dependency>
-		<!-- Import Wildfly Clustering Singleton to allow to create a singleton service -->
+		<!-- Import Clustering Singleton to allow to create a singleton service -->
 		<dependency>
-    		<groupId>org.wildfly</groupId>
-    		<artifactId>wildfly-clustering-singleton-api</artifactId>
-    		<version>${wildfly.version}</version>
-    		<scope>provided</scope>
+			<groupId>org.wildfly</groupId>
+			<artifactId>wildfly-clustering-singleton-api</artifactId>
+			<version>${wildfly.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- Import the CDI API provided in WildFly -->
 		<dependency>
@@ -239,6 +239,18 @@
 				<version>2.6</version>
 				<configuration>
 					<failOnMissingWebXml>true</failOnMissingWebXml>
+					<generateClient>true</generateClient>
+                    <clientIncludes>
+                        <clientInclude>**/ServiceAccess.class</clientInclude>
+                    </clientIncludes>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<manifestEntries>
+							<Dependencies>org.jboss.msc,
+                                org.wildfly.clustering.singleton,
+                                org.jboss.as.server</Dependencies>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -27,7 +27,7 @@ import com.datastax.driver.core.BoundStatement;
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.bean.BeanUtils;
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.identity.common.CassandraConnectorBean;
+import com.hiperium.identity.common.bean.CassandraConnectorBean;
 import com.hiperium.identity.dao.module.SessionRegisterDAO;
 
 /**

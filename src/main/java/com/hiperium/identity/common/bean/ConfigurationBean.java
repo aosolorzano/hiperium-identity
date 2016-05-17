@@ -10,7 +10,7 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  * 
  */
-package com.hiperium.identity.common;
+package com.hiperium.identity.common.bean;
 
 import java.util.Properties;
 

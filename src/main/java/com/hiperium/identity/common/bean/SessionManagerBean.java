@@ -10,31 +10,20 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  * 
  */
-package com.hiperium.identity.common;
+package com.hiperium.identity.common.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
-import javax.ejb.LocalBean;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import com.hiperium.common.services.EnumAccessChannel;
 import com.hiperium.common.services.EnumAuthenticationResult;
 import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.vo.UserSessionVO;
 
 /**
@@ -44,17 +33,10 @@ import com.hiperium.common.services.vo.UserSessionVO;
  * @author Andres Solorzano
  * @version 1.0
  */
-@Startup
-@Singleton
-@LocalBean
-@Lock(LockType.READ)
-@DependsOn("ConfigurationBean")
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class SessionManagerBean {
+public class SessionManagerBean implements Serializable {
 
-	/** The property log. */
-	@Inject
-	protected HiperiumLogger log;
+	/** The serialVersionUID property. */
+	private static final long serialVersionUID = 6226858590509908917L;
 	
 	/** The userTokenMap property. */
 	private HashMap<String, SessionRegister> userTokenMap;
@@ -64,64 +46,45 @@ public class SessionManagerBean {
 	private HashMap<Long, Set<String>> homeUsersTokenMap;
 	
 	/**
-	 * Class constructor.
+	 * Initializes the component.
 	 */
-	public SessionManagerBean() {
+	public void initialize() {
 		this.userTokenMap = new HashMap<String, SessionRegister>();
 		this.homeTokenMap = new HashMap<String, SessionRegister>();
 		this.homeUsersTokenMap = new HashMap<Long, Set<String>>();
-	}
-	
-	/**
-	 * Component initialization.
-	 */
-	@PostConstruct
-	public void init() {
-		this.log.debug("init - BEGIN");
+		// Add Platform User to session register map
 		SessionRegister platformRegister = new SessionRegister();
-		platformRegister.setUserId(1L); // Platform user
-		platformRegister.setTokenId(UUID.randomUUID().toString()); // Initial application token
+		platformRegister.setUserId(1L); 
+		platformRegister.setTokenId(UUID.randomUUID().toString()); // Initial application user token
 		platformRegister.setAccessChannel(EnumAccessChannel.PLATFORM);
 		platformRegister.setActive(true);
 		platformRegister.setIpConnection("localhost");
 		platformRegister.setLoginDate(new Date());
 		platformRegister.setAuthenticationResult(EnumAuthenticationResult.LOGIN_SUCCESS);
-		
 		this.userTokenMap.put(platformRegister.getTokenId(), platformRegister);
-		this.log.debug("init - END");
 	}
 	
 	/**
 	 * 
 	 * @param sessionRegister
-	 * @return
 	 */
-	public SessionRegister addUserSessionRegister(@NotNull SessionRegister sessionRegister) {
-		this.log.debug("addSessionRegister - BEGIN");
+	public void addUserSessionRegister(@NotNull SessionRegister sessionRegister) {
 		this.userTokenMap.put(sessionRegister.getTokenId(), sessionRegister);
-		this.log.debug("addSessionRegister - END");
-		return sessionRegister;
 	}
 	
 	/**
 	 * 
 	 * @param sessionRegister
-	 * @return
 	 */
-	public SessionRegister addHomeSessionRegister(@NotNull SessionRegister sessionRegister) {
-		this.log.debug("addHomeSessionRegister - BEGIN");
+	public void addHomeSessionRegister(@NotNull SessionRegister sessionRegister) {
 		this.homeTokenMap.put(sessionRegister.getTokenId(), sessionRegister);
-		this.log.debug("addHomeSessionRegister - END");
-		return sessionRegister;
 	}
 	
 	/**
 	 * 
 	 * @param sessionRegister
-	 * @throws InformationException
 	 */
-	public void updateUserSessionRegister(@NotNull SessionRegister sessionRegister) throws InformationException {
-		this.log.debug("updateSessionRegister - BEGIN");
+	public void updateUserSessionRegister(@NotNull SessionRegister sessionRegister) {
 		if(this.userTokenMap.containsKey(sessionRegister.getTokenId())) {
 			this.userTokenMap.put(sessionRegister.getTokenId(), sessionRegister);
 		}
@@ -135,7 +98,6 @@ public class SessionManagerBean {
 			sessionIds.add(sessionRegister.getTokenId());
 			this.homeUsersTokenMap.put(sessionRegister.getHomeId(), sessionIds);
 		}
-		this.log.debug("updateSessionRegister - END");
 	}
 	
 	/**
@@ -144,7 +106,6 @@ public class SessionManagerBean {
 	 * @return
 	 */
 	public SessionRegister delete(@NotNull String tokenId) {
-		this.log.debug("delete - BEGIN");
 		SessionRegister sessionRegister = this.userTokenMap.get(tokenId);
 		if(sessionRegister != null) {
 			this.userTokenMap.remove(tokenId);
@@ -156,7 +117,6 @@ public class SessionManagerBean {
 				}
 			}
 		}
-		this.log.debug("delete - END");
 		return sessionRegister;
 	}
 	
@@ -173,9 +133,8 @@ public class SessionManagerBean {
 	 * 
 	 * @param tokenId
 	 * @return
-	 * @throws InformationException
 	 */
-	public SessionRegister findUserSessionRegister(@NotNull String tokenId) throws InformationException {
+	public SessionRegister findUserSessionRegister(@NotNull String tokenId) {
 		SessionRegister register = null;
 		if (this.userTokenMap.containsKey(tokenId)) {
 			register = this.userTokenMap.get(tokenId);

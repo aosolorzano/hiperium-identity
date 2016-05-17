@@ -10,7 +10,7 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  * 
  */
-package com.hiperium.identity.common.filter;
+package com.hiperium.identity.restful.filter;
 
 import java.io.IOException;
 

@@ -27,7 +27,7 @@ import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.vo.UserSessionVO;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
-import com.hiperium.identity.common.SessionManagerBean;
+import com.hiperium.identity.bo.module.SessionManagerBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
 import com.hiperium.identity.common.utils.HashMd5;
 import com.hiperium.identity.dao.factory.DataAccessFactory;
@@ -46,7 +46,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 
 	/** The property log. */
     @Inject
-    protected HiperiumLogger log;
+    private HiperiumLogger log;
     
     /** The property daoFactory. */
     @Inject
@@ -60,9 +60,9 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	@EJB
 	private SessionRegisterDAO sessionRegisterDAO;
 	
-	/** The property sessionManagerBean. */
+	/** The property sessionManagerBO. */
 	@EJB
-	private SessionManagerBean sessionManagerBean;
+	private SessionManagerBO sessionManagerBO;
 	
 	/**
 	 * {@inheritDoc}
@@ -96,7 +96,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		this.sessionRegisterDAO.create(sessionRegister);
 		
 		// Add user session register to the singleton map
-		this.sessionManagerBean.addUserSessionRegister(sessionRegister);
+		this.sessionManagerBO.addUserSessionRegister(sessionRegister);
 				
 		this.log.debug("userAuthentication - END");
 		return sessionRegister;
@@ -129,7 +129,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		this.sessionRegisterDAO.create(sessionRegister);
 		
 		// Add user session register to the singleton map
-		this.sessionManagerBean.addHomeSessionRegister(sessionRegister);
+		this.sessionManagerBO.addHomeSessionRegister(sessionRegister);
 				
 		this.log.debug("homeAuthentication - END");
 		return sessionRegister;
@@ -143,7 +143,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		this.log.debug("homeSelection - BEGIN");
 		
 		// Sets the values to session register
-		SessionRegister sessionRegister = this.sessionManagerBean.findUserSessionRegister(tokenId);
+		SessionRegister sessionRegister = this.sessionManagerBO.findUserSessionRegister(tokenId);
 		sessionRegister.setHomeId(homeSelectionDTO.getHomeId());
 		sessionRegister.setProfileId(homeSelectionDTO.getProfileId());
 		
@@ -163,7 +163,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		// UPDATE SESSION REGISTER
 		try {
 			this.auditManagerBO.updateHomeSelection(sessionRegister, sessionRegister.getTokenId());
-			this.sessionManagerBean.updateUserSessionRegister(sessionRegister);
+			this.sessionManagerBO.updateUserSessionRegister(sessionRegister);
 		} catch (Exception e) {
 			throw new InformationException(e.getMessage());
 		}
@@ -176,7 +176,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 */
 	@Override
 	public SessionRegister findUserSessionRegister(@NotNull String tokenId) throws InformationException {
-		return this.sessionManagerBean.findUserSessionRegister(tokenId);
+		return this.sessionManagerBO.findUserSessionRegister(tokenId);
 	}
 	
 	/**
@@ -184,7 +184,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 */
 	@Override
 	public boolean isUserLoggedIn(@NotNull String tokenId) {
-		return this.sessionManagerBean.isUserLoggedIn(tokenId);
+		return this.sessionManagerBO.isUserLoggedIn(tokenId);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 */
 	@Override
 	public UserSessionVO findUserSessionVO(@NotNull String tokenId) {
-		return this.sessionManagerBean.findUserSessionVO(tokenId);
+		return this.sessionManagerBO.findUserSessionVO(tokenId);
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 */
 	@Override
 	public void endUserSession(@NotNull String tokenId) {
-		SessionRegister sessionRegister = this.sessionManagerBean.delete(tokenId);
+		SessionRegister sessionRegister = this.sessionManagerBO.delete(tokenId);
 		if(sessionRegister != null) {
 			try {
 				this.auditManagerBO.updateLogoutDate(sessionRegister, sessionRegister.getTokenId());

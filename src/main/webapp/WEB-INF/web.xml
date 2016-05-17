@@ -40,17 +40,17 @@
 	<!-- ACCESS CONTROL FILTERS -->
 	<filter>
 		<filter-name>CorsFilter</filter-name>
-		<filter-class>com.hiperium.identity.common.filter.CorsFilter</filter-class>
+		<filter-class>com.hiperium.identity.restful.filter.CorsFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	<filter>
 		<filter-name>JsonpFilter</filter-name>
-		<filter-class>com.hiperium.identity.common.filter.JsonpFilter</filter-class>
+		<filter-class>com.hiperium.identity.restful.filter.JsonpFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	<filter>
 		<filter-name>TokenFilter</filter-name>
-		<filter-class>com.hiperium.identity.common.filter.TokenFilter</filter-class>
+		<filter-class>com.hiperium.identity.restful.filter.TokenFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	

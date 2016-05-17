@@ -29,7 +29,7 @@ import org.apache.curator.utils.CloseableUtils;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.restful.IdentityRegistryPath;
 import com.hiperium.common.services.restful.registry.ServiceRegister;
-import com.hiperium.identity.common.ConfigurationBean;
+import com.hiperium.identity.common.bean.ConfigurationBean;
 
 /**
  * This class represents the JAX-RS Activation Implementation for JAX-RS

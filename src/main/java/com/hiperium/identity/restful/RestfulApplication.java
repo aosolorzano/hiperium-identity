@@ -12,8 +12,6 @@
  */
 package com.hiperium.identity.restful;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +49,8 @@ public class RestfulApplication extends Application {
 	/** The property servers. */
 	private List<ServiceRegister> registers;
 	
+	/** The property serviceHost. */
+	private String serviceHost; 
 	/** The property servicePort. */
 	private Integer servicePort;
 	
@@ -61,6 +61,7 @@ public class RestfulApplication extends Application {
 	public void init() {
 		LOGGER.info("init() - START");
 		this.registers = new ArrayList<ServiceRegister>();
+		this.serviceHost = ConfigurationBean.getPropertyValue(ConfigurationBean.SERVER_HOST);
 		this.servicePort = Integer.valueOf(ConfigurationBean.getPropertyValue(ConfigurationBean.SERVER_PORT));
 		this.registerService(RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.USER_AUTH),             IdentityRegistryPath.USER_AUTHENTICATION,          "1.0", "");
 		this.registerService(RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.HOME_AUTH),             IdentityRegistryPath.HOME_AUTHENTICATION,          "1.0", "");
@@ -115,16 +116,8 @@ public class RestfulApplication extends Application {
 	 * @return
 	 */
 	private String getUri(final String servicePath) {
-		String localIP = null;
-		try {
-			InetAddress localAddress = InetAddress.getLocalHost();
-			localIP = localAddress.getHostAddress();
-		} catch (UnknownHostException e) {
-			localIP = ConfigurationBean.getPropertyValue(ConfigurationBean.SERVER_HOST);
-			LOGGER.error("Unknown host exception, using defaul Hiperium server address: " + localIP);
-		}
 		return String.format("{scheme}://%s:{port}%s%s%s", 
-				localIP,
+				this.serviceHost,
 				RestIdentityPath.IDENTITY_CONTEXT_ROOT, 
 				RestIdentityPath.IDENTITY_PATH, 
 				servicePath);

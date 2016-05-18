@@ -110,6 +110,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- Dependencies for EJB Client Specification -->
+			<dependency>
+				<groupId>org.wildfly</groupId>
+				<artifactId>wildfly-ejb-client-bom</artifactId>
+				<version>${wildfly.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 			<!-- Dependencies for Arquillian Testing Framework -->
 			<dependency>
 				<groupId>org.jboss.arquillian</groupId>
@@ -132,14 +140,17 @@
 		<dependency>
 			<groupId>org.jboss.msc</groupId>
 			<artifactId>jboss-msc</artifactId>
-			<version>1.2.6.Final</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Import Clustering Singleton to allow to create a singleton service -->
 		<dependency>
 			<groupId>org.wildfly</groupId>
+			<artifactId>wildfly-clustering-common</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-clustering-singleton-api</artifactId>
-			<version>${wildfly.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Import the CDI API provided in WildFly -->
@@ -201,11 +212,16 @@
 			<artifactId>cassandra-driver-mapping</artifactId>
 			<version>2.1.4</version>
 		</dependency>
+		<!-- APACHE COMMONS LOGGING -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
 		<!-- Make Arquillian work with JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -239,16 +255,9 @@
 				<version>2.6</version>
 				<configuration>
 					<failOnMissingWebXml>true</failOnMissingWebXml>
-					<generateClient>true</generateClient>
-                    <clientIncludes>
-                        <clientInclude>**/ServiceAccess.class</clientInclude>
-                    </clientIncludes>
 					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
 						<manifestEntries>
-							<Dependencies>org.jboss.msc,
-                                org.wildfly.clustering.singleton,
-                                org.jboss.as.server</Dependencies>
+							<Dependencies>org.jboss.msc, org.wildfly.clustering.singleton, org.jboss.as.server</Dependencies>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -289,25 +298,21 @@
 				<dependency>
 					<groupId>io.undertow</groupId>
 					<artifactId>undertow-websockets-jsr</artifactId>
-					<version>${io.undertow.websockets.version}</version>
 					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.resteasy</groupId>
 					<artifactId>resteasy-client</artifactId>
-					<version>${org.resteasy.version}</version>
 					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.resteasy</groupId>
 					<artifactId>resteasy-jaxb-provider</artifactId>
-					<version>${org.resteasy.version}</version>
 					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.resteasy</groupId>
 					<artifactId>resteasy-json-p-provider</artifactId>
-					<version>${org.resteasy.version}</version>
 					<scope>test</scope>
 				</dependency>
 				<dependency>

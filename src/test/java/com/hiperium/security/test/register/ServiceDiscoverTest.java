@@ -61,7 +61,7 @@ public class ServiceDiscoverTest {
 	
 	private static final String ZK_HOST = "app.hiperium.com:2181";
 	public static final String SERVER_HOST = "app.hiperium.com";
-	public static final Integer SERVER_PORT = 8081;
+	public static final Integer SERVER_PORT = 8181;
 	
 	private CuratorFramework curatorClient;
 	private ServiceDiscovery<ServiceDetailsDTO> serviceDiscovery;

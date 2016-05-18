@@ -48,7 +48,7 @@ public class HASingletonService implements Service<SessionManagerBean> {
 	@Override
 	public SessionManagerBean getValue() throws IllegalStateException, IllegalArgumentException {
 		if(!this.started.get()) {
-			throw new IllegalStateException("The service '" + this.getClass().getName() + "' is not ready!");
+			throw new IllegalStateException("The service '" + this.getClass().getName() + "' is not ready.");
 	    }
         return this.sessionManagerBean;
 	}
@@ -59,7 +59,7 @@ public class HASingletonService implements Service<SessionManagerBean> {
 	@Override
 	public void start(StartContext context) throws StartException {
 		if (!this.started.compareAndSet(false, true)) {
-            throw new StartException("The service " + this.getClass().getName() + " is already active!");
+            throw new StartException("The service " + this.getClass().getName() + " is already active.");
         }
         LOGGER.info("Start HA Singleton Service: '" + this.getClass().getName() + "'");
         this.sessionManagerBean = new SessionManagerBean();
@@ -72,7 +72,7 @@ public class HASingletonService implements Service<SessionManagerBean> {
 	@Override
 	public void stop(StopContext context) {
 		if (!this.started.compareAndSet(true, false)) {
-            LOGGER.info("The service '" + this.getClass().getName() + "' is not active!");
+            LOGGER.info("The service '" + this.getClass().getName() + "' is not active.");
         }
 	}
 

@@ -46,7 +46,7 @@ public class HAServiceActivator implements ServiceActivator {
 	 */
 	@Override
 	public void activate(ServiceActivatorContext context) throws ServiceRegistryException {
-		LOGGER.info("HAService will be installed!");
+		LOGGER.info("activate - BEGIN");
 		HASingletonService service = new HASingletonService();
         ServiceName factoryServiceName = SingletonServiceName.BUILDER.getServiceName(CONTAINER_NAME, CACHE_NAME);
         ServiceController<?> factoryService = context.getServiceRegistry().getRequiredService(factoryServiceName);
@@ -68,6 +68,7 @@ public class HAServiceActivator implements ServiceActivator {
             .build(new DelegatingServiceContainer(context.getServiceTarget(), context.getServiceRegistry()))
             .setInitialMode(ServiceController.Mode.ACTIVE)
             .install();
+        LOGGER.info("activate - END");
 	}
 
 }

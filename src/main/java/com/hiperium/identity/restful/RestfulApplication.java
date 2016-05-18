@@ -25,7 +25,8 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.utils.CloseableUtils;
 
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.IdentityRegistryPath;
+import com.hiperium.common.services.restful.identity.IdentityRegistryPath;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 import com.hiperium.common.services.restful.registry.ServiceRegister;
 import com.hiperium.identity.common.bean.ConfigurationBean;
 
@@ -36,7 +37,7 @@ import com.hiperium.identity.common.bean.ConfigurationBean;
  * @author Andres Solorzano
  *
  */
-@ApplicationPath(RestIdentityPath.IDENTITY_PATH)
+@ApplicationPath(IdentityRestfulPath.IDENTITY_PATH)
 public class RestfulApplication extends Application {
 
 	/** The LOGGER property for logger messages. */
@@ -63,18 +64,21 @@ public class RestfulApplication extends Application {
 		this.registers = new ArrayList<ServiceRegister>();
 		this.serviceHost = ConfigurationBean.getPropertyValue(ConfigurationBean.SERVER_HOST);
 		this.servicePort = Integer.valueOf(ConfigurationBean.getPropertyValue(ConfigurationBean.SERVER_PORT));
-		this.registerService(RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.USER_AUTH),             IdentityRegistryPath.USER_AUTHENTICATION,          "1.0", "");
-		this.registerService(RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.HOME_AUTH),             IdentityRegistryPath.HOME_AUTHENTICATION,          "1.0", "");
-		this.registerService(RestIdentityPath.HOME_SELECTION,                                                IdentityRegistryPath.HOME_SELECTION,               "1.0", "");
-		this.registerService(RestIdentityPath.APPLICATION_USER,                                              IdentityRegistryPath.FIND_APP_USER_BY_ROLE_NAME,   "1.0", "");
-		this.registerService(RestIdentityPath.HOMES.concat(RestIdentityPath.FIND_HOME_USER_BY_ID),           IdentityRegistryPath.FIND_HOME_USER_BY_ID,         "1.0", "");
-		this.registerService(RestIdentityPath.PROFILE_FUNCTIONALITY.concat(RestIdentityPath.UPDATE),         IdentityRegistryPath.UPDATE_PROFILE_FUNCTIONALITY, "1.0", "");
-		this.registerService(RestIdentityPath.PROFILES.concat(RestIdentityPath.CREATE),                      IdentityRegistryPath.CREATE_PROFILE,               "1.0", "");
-		this.registerService(RestIdentityPath.PROFILES.concat(RestIdentityPath.UPDATE),                      IdentityRegistryPath.UPDATE_PROFILE,               "1.0", "");
-		this.registerService(RestIdentityPath.PROFILES.concat(RestIdentityPath.DELETE),                      IdentityRegistryPath.DELETE_PROFILE,               "1.0", "");
-		this.registerService(RestIdentityPath.PROFILES.concat(RestIdentityPath.FIND_PROFILE_BY_HOME_ID),     IdentityRegistryPath.FIND_PROFILE_BY_HOME_ID,      "1.0", "");
-		this.registerService(RestIdentityPath.UPDATE_PASSWORD,                                               IdentityRegistryPath.UPDATE_USER_PASSWORD,         "1.0", "");
-		this.registerService(RestIdentityPath.USERS.concat(RestIdentityPath.FIND_USER_BY_ID),                IdentityRegistryPath.FIND_USER_BY_ID,              "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.USER_AUTH),             IdentityRegistryPath.USER_AUTHENTICATION,          "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.HOME_AUTH),             IdentityRegistryPath.HOME_AUTHENTICATION,          "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.IS_USER_LOGGED_IN),     IdentityRegistryPath.IS_USER_LOGGED_IN,            "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.GET_USER_SESSION_VO),   IdentityRegistryPath.GET_USER_SESSION_VO,          "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.LOGOUT),                IdentityRegistryPath.LOGOUT,          			  "1.0", "");
+		this.registerService(IdentityRestfulPath.HOME_SELECTION,                                                   IdentityRegistryPath.HOME_SELECTION,               "1.0", "");
+		this.registerService(IdentityRestfulPath.APPLICATION_USER,                                                 IdentityRegistryPath.FIND_APP_USER_BY_ROLE_NAME,   "1.0", "");
+		this.registerService(IdentityRestfulPath.HOMES.concat(IdentityRestfulPath.FIND_HOME_USER_BY_ID),           IdentityRegistryPath.FIND_HOME_USER_BY_ID,         "1.0", "");
+		this.registerService(IdentityRestfulPath.PROFILE_FUNCTIONALITY.concat(IdentityRestfulPath.UPDATE),         IdentityRegistryPath.UPDATE_PROFILE_FUNCTIONALITY, "1.0", "");
+		this.registerService(IdentityRestfulPath.PROFILES.concat(IdentityRestfulPath.CREATE),                      IdentityRegistryPath.CREATE_PROFILE,               "1.0", "");
+		this.registerService(IdentityRestfulPath.PROFILES.concat(IdentityRestfulPath.UPDATE),                      IdentityRegistryPath.UPDATE_PROFILE,               "1.0", "");
+		this.registerService(IdentityRestfulPath.PROFILES.concat(IdentityRestfulPath.DELETE),                      IdentityRegistryPath.DELETE_PROFILE,               "1.0", "");
+		this.registerService(IdentityRestfulPath.PROFILES.concat(IdentityRestfulPath.FIND_PROFILE_BY_HOME_ID),     IdentityRegistryPath.FIND_PROFILE_BY_HOME_ID,      "1.0", "");
+		this.registerService(IdentityRestfulPath.UPDATE_PASSWORD,                                                  IdentityRegistryPath.UPDATE_USER_PASSWORD,         "1.0", "");
+		this.registerService(IdentityRestfulPath.USERS.concat(IdentityRestfulPath.FIND_USER_BY_ID),                IdentityRegistryPath.FIND_USER_BY_ID,              "1.0", "");
 		LOGGER.info("init() - END");
 	}
 
@@ -118,8 +122,8 @@ public class RestfulApplication extends Application {
 	private String getUri(final String servicePath) {
 		return String.format("{scheme}://%s:{port}%s%s%s", 
 				this.serviceHost,
-				RestIdentityPath.IDENTITY_CONTEXT_ROOT, 
-				RestIdentityPath.IDENTITY_PATH, 
+				IdentityRestfulPath.IDENTITY_CONTEXT_ROOT, 
+				IdentityRestfulPath.IDENTITY_PATH, 
 				servicePath);
 	}
 }

@@ -34,7 +34,7 @@ import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.AuditRegistryPath;
+import com.hiperium.common.services.restful.audit.AuditRegistryPath;
 import com.hiperium.common.services.restful.audit.AuditService;
 import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
 import com.hiperium.identity.audit.bo.AuditManagerBO;

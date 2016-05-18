@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.hiperium.security.test.register;
+package com.hiperium.identity.test.register;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -32,10 +32,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.IdentityRegistryPath;
 import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
+import com.hiperium.common.services.restful.identity.IdentityRegistryPath;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 import com.hiperium.common.services.restful.registry.ServiceRegister;
-import com.hiperium.identity.restful.RestIdentityPath;
 
 /**
  * 
@@ -52,7 +52,7 @@ public class ServiceDiscoverTest {
 	@Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "identity-service-test.war").addClasses(
-        		RestIdentityPath.class
+        		IdentityRestfulPath.class
         );
     }
 	
@@ -92,9 +92,9 @@ public class ServiceDiscoverTest {
     	LOGGER.info("queryService() - START");
     	String serviceURI = String.format("{scheme}://%s:{port}%s%s%s", 
     			SERVER_HOST,
-				RestIdentityPath.IDENTITY_CONTEXT_ROOT, 
-				RestIdentityPath.IDENTITY_PATH, 
-				RestIdentityPath.AUTHENTICATION.concat(RestIdentityPath.IS_USER_LOGGED_IN));
+				IdentityRestfulPath.IDENTITY_CONTEXT_ROOT, 
+				IdentityRestfulPath.IDENTITY_PATH, 
+				IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.IS_USER_LOGGED_IN));
 		ServiceRegister server;
 		try {
 			// CURATOR CLIENT PART FOR REGISTERING SERVICES

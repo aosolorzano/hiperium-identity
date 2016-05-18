@@ -40,6 +40,7 @@ import com.hiperium.common.services.dto.HomeResponseDTO;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.exception.PropertyValidationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 import com.hiperium.common.services.vo.UserSessionVO;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
@@ -49,7 +50,6 @@ import com.hiperium.identity.common.dto.HomeSelectionDTO;
 import com.hiperium.identity.common.dto.UserAuthResponseDTO;
 import com.hiperium.identity.common.dto.UserCredentialDTO;
 import com.hiperium.identity.model.security.User;
-import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -58,7 +58,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  *
  * @author Andres Solorzano
  */
-@Path(RestIdentityPath.AUTHENTICATION)
+@Path(IdentityRestfulPath.AUTHENTICATION)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class AuthenticationResource extends GenericResource<UserAuthResponseDTO> {
@@ -96,7 +96,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
      * @throws PropertyValidationException
      */
     @POST
-    @Path(RestIdentityPath.USER_AUTH)
+    @Path(IdentityRestfulPath.USER_AUTH)
     public UserAuthResponseDTO userAuthentication(@NotNull UserCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("userAuthentication - BEGIN");
@@ -150,7 +150,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
      * @throws PropertyValidationException
      */
     @POST
-    @Path(RestIdentityPath.HOME_AUTH)
+    @Path(IdentityRestfulPath.HOME_AUTH)
     public HomeResponseDTO homeAuthentication(@NotNull HomeCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("homeAuthentication - BEGIN");
@@ -185,8 +185,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws PropertyValidationException
 	 */
 	@POST
-	@Path(RestIdentityPath.HOME_SELECTION)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Path(IdentityRestfulPath.HOME_SELECTION)
 	public Response select(@NotNull HomeSelectionDTO homeSelectionDTO) throws InformationException, PropertyValidationException {
 		this.log.debug("select - BEGIN");
 		
@@ -211,14 +210,14 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws WebApplicationException
 	 */
 	@GET
-	@Path(RestIdentityPath.IS_USER_LOGGED_IN)
+	@Path(IdentityRestfulPath.IS_USER_LOGGED_IN)
 	public Response isUserLoggedIn() throws WebApplicationException {
 		this.log.debug("isUserLoggedIn - BEGIN");
 		if(!this.authenticationBO.isUserLoggedIn(super.getTokenId())) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isUserLoggedIn - END");
-		return Response.ok("OK").build();
+		return Response.ok().build();
 	}
 	
 	/**
@@ -228,8 +227,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @throws WebApplicationException
 	 */
 	@GET
-	@Path(RestIdentityPath.GET_USER_SESSION_VO)
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path(IdentityRestfulPath.GET_USER_SESSION_VO)
 	public UserSessionVO getUserSessionVO() throws WebApplicationException {
 		this.log.debug("getUserSessionVO - BEGIN");
 		UserSessionVO sessionAuditVO = this.authenticationBO.findUserSessionVO(super.getTokenId());
@@ -242,7 +240,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	 * @return
 	 */
 	@GET
-	@Path(RestIdentityPath.LOGOUT)
+	@Path(IdentityRestfulPath.LOGOUT)
 	public Response logout() {
 		this.log.debug("logout - BEGIN");
 		this.authenticationBO.endUserSession(super.getTokenId());

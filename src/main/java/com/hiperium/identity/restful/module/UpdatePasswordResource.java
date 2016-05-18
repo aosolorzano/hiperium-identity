@@ -27,10 +27,10 @@ import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.exception.PropertyValidationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.UpdatePasswordBO;
 import com.hiperium.identity.common.dto.UpdatePasswordDTO;
-import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -39,7 +39,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestIdentityPath.UPDATE_PASSWORD)
+@Path(IdentityRestfulPath.UPDATE_PASSWORD)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class UpdatePasswordResource extends GenericResource<UpdatePasswordDTO> {
 

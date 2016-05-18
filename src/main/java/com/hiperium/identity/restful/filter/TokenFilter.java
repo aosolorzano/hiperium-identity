@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.identity.restful.RestIdentityPath;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 
 
 /**
@@ -68,9 +68,9 @@ public class TokenFilter implements Filter {
 		// Exclude some URLs used for validation propose
 		String path = httpRequest.getRequestURI();
 		LOGGER.debug("Accessing To: ".concat(path));
-		if(!(path.endsWith(RestIdentityPath.IS_USER_LOGGED_IN) || 
-				path.endsWith(RestIdentityPath.USER_AUTH) || 
-				path.endsWith(RestIdentityPath.HOME_AUTH))) {
+		if(!(path.endsWith(IdentityRestfulPath.IS_USER_LOGGED_IN) || 
+				path.endsWith(IdentityRestfulPath.USER_AUTH) || 
+				path.endsWith(IdentityRestfulPath.HOME_AUTH))) {
 			// Get Token ID and validates it against session map.
 			String tokenId = httpRequest.getHeader("Authorization");
 			if(StringUtils.isBlank(tokenId)) {

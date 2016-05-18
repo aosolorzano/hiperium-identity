@@ -25,9 +25,9 @@ import javax.ws.rs.core.Response;
 
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
 import com.hiperium.identity.bo.module.UserBO;
 import com.hiperium.identity.model.security.User;
-import com.hiperium.identity.restful.RestIdentityPath;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 
@@ -38,7 +38,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
  * @author Andres Solorzano
  * 
  */
-@Path(RestIdentityPath.USERS)
+@Path(IdentityRestfulPath.USERS)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class UserResource extends GenericResource<User> {
@@ -59,7 +59,7 @@ public class UserResource extends GenericResource<User> {
 	 * @throws InformationException
 	 */
 	@GET
-	@Path(RestIdentityPath.FIND_USER_BY_ID)
+	@Path(IdentityRestfulPath.FIND_USER_BY_ID)
 	public User findByUserId(@QueryParam("userId") Long userId)
 			throws WebApplicationException, InformationException {
 		this.log.debug("findByUsername - " + userId);

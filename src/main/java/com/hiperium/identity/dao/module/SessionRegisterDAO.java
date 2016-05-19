@@ -12,6 +12,8 @@
  */
 package com.hiperium.identity.dao.module;
 
+import java.util.UUID;
+
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
 
@@ -31,4 +33,16 @@ public interface SessionRegisterDAO {
 	 * @return
 	 */
 	SessionRegister create(@NotNull SessionRegister sessionRegister);
+	
+	/**
+	 * 
+	 * @param sessionRegister
+	 */
+	void updateHomeSelection(@NotNull SessionRegister sessionRegister);
+	
+	/**
+	 * 
+	 * @param sessionRegister
+	 */
+	void updateLogoutDate(@NotNull UUID id);
 }

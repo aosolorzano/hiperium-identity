@@ -73,6 +73,13 @@ public interface AuthenticationBO {
 	 * @param tokenId
 	 * @return
 	 */
+	boolean isHomeLoggedIn(@NotNull String tokenId);
+	
+	/**
+	 * 
+	 * @param tokenId
+	 * @return
+	 */
 	UserSessionVO findUserSessionVO(@NotNull String tokenId);
 
 	/**

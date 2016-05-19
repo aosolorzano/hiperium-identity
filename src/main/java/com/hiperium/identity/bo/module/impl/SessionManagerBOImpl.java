@@ -101,6 +101,19 @@ public class SessionManagerBOImpl implements SessionManagerBO {
 		}
 		return false;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isHomeLoggedIn(String tokenId) {
+		this.log.debug("isHomeLoggedIn - START");
+		SessionManagerBean managerBean = this.getSessionManagerBean();
+		if(managerBean != null) {
+			return managerBean.isHomeLoggedIn(tokenId);
+		}
+		return false;
+	}
 
 	/**
 	 * {@inheritDoc}

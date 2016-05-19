@@ -130,6 +130,15 @@ public class SessionManagerBean implements Serializable {
 	}
 	
 	/**
+	 *
+	 * @param tokenId
+	 * @return
+	 */
+	public boolean isHomeLoggedIn(@NotNull String tokenId) {
+		return this.homeTokenMap.containsKey(tokenId);
+	}
+	
+	/**
 	 * 
 	 * @param tokenId
 	 * @return

@@ -57,6 +57,13 @@ public interface SessionManagerBO {
 	 * @return
 	 */
 	boolean isUserLoggedIn(@NotNull String tokenId);
+	
+	/**
+	 * 
+	 * @param tokenId
+	 * @return
+	 */
+	boolean isHomeLoggedIn(String tokenId);
 
 	/**
 	 * 

@@ -159,6 +159,12 @@
 			<artifactId>cdi-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Import the Servlet API provided in WildFly -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Import the JAX-RS API provided in WildFly -->
 		<dependency>
 			<groupId>org.jboss.spec.javax.ws.rs</groupId>
@@ -181,18 +187,6 @@
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>
 			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Import the Servlet API provided in WildFly -->
-		<dependency>
-			<groupId>org.jboss.spec.javax.servlet</groupId>
-			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Import the MAIL API provided in WildFly -->
-		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Import the Javax Validation API provided in WildFly -->

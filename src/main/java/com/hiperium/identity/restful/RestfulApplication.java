@@ -67,6 +67,7 @@ public class RestfulApplication extends Application {
 		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.USER_AUTH),             IdentityRegistryPath.USER_AUTHENTICATION,          "1.0", "");
 		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.HOME_AUTH),             IdentityRegistryPath.HOME_AUTHENTICATION,          "1.0", "");
 		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.IS_USER_LOGGED_IN),     IdentityRegistryPath.IS_USER_LOGGED_IN,            "1.0", "");
+		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.IS_HOME_LOGGED_IN),     IdentityRegistryPath.IS_HOME_LOGGED_IN,            "1.0", "");
 		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.GET_USER_SESSION_VO),   IdentityRegistryPath.GET_USER_SESSION_VO,          "1.0", "");
 		this.registerService(IdentityRestfulPath.AUTHENTICATION.concat(IdentityRestfulPath.LOGOUT),                IdentityRegistryPath.LOGOUT,          			  "1.0", "");
 		this.registerService(IdentityRestfulPath.HOME_SELECTION,                                                   IdentityRegistryPath.HOME_SELECTION,               "1.0", "");

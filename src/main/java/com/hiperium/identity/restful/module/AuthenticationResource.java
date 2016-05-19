@@ -10,7 +10,7 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  *
  */
-package com.hiperium.identity.restful.auth;
+package com.hiperium.identity.restful.module;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -217,6 +217,23 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isUserLoggedIn - END");
+		return Response.ok().build();
+	}
+	
+	/**
+	 * 
+	 * @param userToken
+	 * @return
+	 * @throws WebApplicationException
+	 */
+	@GET
+	@Path(IdentityRestfulPath.IS_HOME_LOGGED_IN)
+	public Response isHomeLoggedIn() throws WebApplicationException {
+		this.log.debug("isHomeLoggedIn - BEGIN");
+		if(!this.authenticationBO.isHomeLoggedIn(super.getTokenId())) {
+			throw new WebApplicationException(Status.UNAUTHORIZED);
+		}
+		this.log.debug("isHomeLoggedIn - END");
 		return Response.ok().build();
 	}
 	

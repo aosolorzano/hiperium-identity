@@ -25,7 +25,6 @@ import com.hiperium.common.services.exception.EnumInformationException;
 import com.hiperium.common.services.exception.InformationException;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.vo.UserSessionVO;
-import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.SessionManagerBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
@@ -52,10 +51,6 @@ public class AuthenticationBOImpl implements AuthenticationBO {
     @Inject
     private DataAccessFactory daoFactory;
     
-    /** The property auditManagerBO. */
-	@EJB
-	private AuditManagerBO auditManagerBO;
-	
     /** The property sessionRegisterDAO. */
 	@EJB
 	private SessionRegisterDAO sessionRegisterDAO;
@@ -162,7 +157,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		
 		// UPDATE SESSION REGISTER
 		try {
-			this.auditManagerBO.updateHomeSelection(sessionRegister, sessionRegister.getTokenId());
+			this.sessionRegisterDAO.updateHomeSelection(sessionRegister);
 			this.sessionManagerBO.updateUserSessionRegister(sessionRegister);
 		} catch (Exception e) {
 			throw new InformationException(e.getMessage());
@@ -186,6 +181,14 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	public boolean isUserLoggedIn(@NotNull String tokenId) {
 		return this.sessionManagerBO.isUserLoggedIn(tokenId);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isHomeLoggedIn(@NotNull String tokenId) {
+		return this.sessionManagerBO.isHomeLoggedIn(tokenId);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -203,7 +206,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		SessionRegister sessionRegister = this.sessionManagerBO.delete(tokenId);
 		if(sessionRegister != null) {
 			try {
-				this.auditManagerBO.updateLogoutDate(sessionRegister, sessionRegister.getTokenId());
+				this.sessionRegisterDAO.updateLogoutDate(sessionRegister.getId());
 			} catch (Exception e) {
 				this.log.error(e.getMessage());
 			}

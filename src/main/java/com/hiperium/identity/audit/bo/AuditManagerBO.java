@@ -16,7 +16,6 @@ import javax.ejb.Local;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
 
 /**
@@ -26,22 +25,6 @@ import com.hiperium.common.services.audit.UserStatistic;
  */
 @Local
 public interface AuditManagerBO {
-
-	/**
-	 * 
-	 * @param sessionRegister
-	 * @param token
-	 * @throws Exception
-	 */
-	void updateHomeSelection(@NotNull SessionRegister sessionRegister, String token) throws Exception;
-
-	/**
-	 * 
-	 * @param sessionRegister
-	 * @param token
-	 * @throws Exception
-	 */
-	void updateLogoutDate(@NotNull SessionRegister sessionRegister, String token) throws Exception;
 
 	/**
 	 * 

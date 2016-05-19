@@ -14,6 +14,7 @@ package com.hiperium.identity.restful.filter;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -27,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
+import com.hiperium.identity.bo.module.SessionManagerBO;
 
 
 /**
@@ -37,6 +39,10 @@ public class TokenFilter implements Filter {
 
 	/** The LOGGER property for logger messages. */
 	private static final HiperiumLogger LOGGER = HiperiumLogger.getLogger(TokenFilter.class);
+	
+	/** The property sessionManagerBO. */
+	@EJB
+	private SessionManagerBO sessionManagerBO;
 	
 	/*
 	 * (non-Javadoc)
@@ -64,16 +70,16 @@ public class TokenFilter implements Filter {
 			return;
         }
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		
-		// Exclude some URLs used for validation propose
 		String path = httpRequest.getRequestURI();
 		LOGGER.debug("Accessing To: ".concat(path));
+		
+		// Exclude some URLs used for validation propose
 		if(!(path.endsWith(IdentityRestfulPath.IS_USER_LOGGED_IN) || 
 				path.endsWith(IdentityRestfulPath.USER_AUTH) || 
 				path.endsWith(IdentityRestfulPath.HOME_AUTH))) {
 			// Get Token ID and validates it against session map.
 			String tokenId = httpRequest.getHeader("Authorization");
-			if(StringUtils.isBlank(tokenId)) {
+			if(StringUtils.isBlank(tokenId) || !this.sessionManagerBO.isUserLoggedIn(tokenId)) {
 				HttpServletResponse res = (HttpServletResponse) response;
 				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				return;

@@ -50,6 +50,12 @@ public class CassandraConnectorBean {
 	private static final String INSERT_SESSION_REGISTER = "INSERT INTO haudit.aud_session_register (id,user_id,token_id,login_date,active,ip_connection,user_agent,auth_result,access_channel) "
 			+ "VALUES (?,?,?,?,?,?,?,?,?);";
 	
+	/** The property UPDATE_HOME_SELECTION_QUERY. */
+	private static final String UPDATE_HOME_SELECTION_QUERY = "UPDATE haudit.aud_session_register SET home_id=?, profile_id=? WHERE id=?;";
+	
+	/** The property UPDATE_LOGOUT_DATE_QUERY. */
+	private static final String UPDATE_LOGOUT_DATE_QUERY = "UPDATE haudit.aud_session_register SET logout_date=? WHERE id=?;";
+	
 	/** The property log. */
 	@Inject
 	private HiperiumLogger log;
@@ -59,8 +65,13 @@ public class CassandraConnectorBean {
 	private Cluster cluster;
 	/** Cassandra Session. */
 	private Session session;
+	
 	/** The property insertSessionRegisterPS. */
 	private PreparedStatement insertSessionRegisterPS;
+	/** The property updateHomeSelectionPS. */
+	private PreparedStatement updateHomeSelectionPS;
+	/** The property updateLogoutDatePS. */
+	private PreparedStatement updateLogoutDatePS;
 	
 	/**
 	 * Component constructor.
@@ -77,6 +88,11 @@ public class CassandraConnectorBean {
 		
 		// Prepared statement for session register audit
 		this.insertSessionRegisterPS = this.session.prepare(INSERT_SESSION_REGISTER);
+		// Prepared statement for home selection audit
+		this.updateHomeSelectionPS = this.session.prepare(UPDATE_HOME_SELECTION_QUERY);
+		// Prepared statement for logout audit
+		this.updateLogoutDatePS = this.session.prepare(UPDATE_LOGOUT_DATE_QUERY);
+				
 		this.log.debug("init() - END");
 	}
 
@@ -97,4 +113,18 @@ public class CassandraConnectorBean {
 		return insertSessionRegisterPS;
 	}
 
+	/**
+	 * @return the updateHomeSelectionPS
+	 */
+	public PreparedStatement getUpdateHomeSelectionPS() {
+		return updateHomeSelectionPS;
+	}
+
+	/**
+	 * @return the updateLogoutDatePS
+	 */
+	public PreparedStatement getUpdateLogoutDatePS() {
+		return updateLogoutDatePS;
+	}
+	
 }

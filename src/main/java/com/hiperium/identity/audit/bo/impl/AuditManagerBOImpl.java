@@ -31,7 +31,6 @@ import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
-import com.hiperium.common.services.audit.SessionRegister;
 import com.hiperium.common.services.audit.UserStatistic;
 import com.hiperium.common.services.logger.HiperiumLogger;
 import com.hiperium.common.services.restful.audit.AuditRegistryPath;
@@ -85,24 +84,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void updateHomeSelection(@NotNull SessionRegister sessionRegister, String token) throws Exception {
-		this.log.debug("updateHomeSelection - START");
-		this.auditService.updateHomeSelection(this.getServiceURI(AuditRegistryPath.UPDATE_SESSION_REGISTER_HOME_SELECTION), sessionRegister, token);
-		this.log.debug("updateHomeSelection - END");
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void updateLogoutDate(@NotNull SessionRegister sessionRegister, String token) throws Exception {
-		this.log.debug("updateLogoutDate - START");
-		this.auditService.updateLogoutDate(this.getServiceURI(AuditRegistryPath.UPDATE_SESSION_REGISTER_LOGOUT_DATE), sessionRegister.getId(), token);
-		this.log.debug("updateLogoutDate - END");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public UserStatistic findUserStatisticById(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("findById - START");
 		return this.auditService.findByUserStatisticId(this.getServiceURI(AuditRegistryPath.FIND_USER_STATISTIC_BY_USER_ID), userId, token);
@@ -111,6 +93,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void updateLastPasswordChange(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("updateLastPasswordChange - START");
 		this.auditService.updateLastPasswordChange(this.getServiceURI(AuditRegistryPath.UPDATE_LAST_USER_PASS_BY_USER_ID), userId, token); 

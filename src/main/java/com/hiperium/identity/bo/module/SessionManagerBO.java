@@ -15,8 +15,8 @@ package com.hiperium.identity.bo.module;
 import javax.ejb.Remote;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.vo.UserSessionVO;
 
 /**
  * 

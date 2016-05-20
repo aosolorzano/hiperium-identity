@@ -10,7 +10,7 @@
 	version="2.1">
 	<named-query name="Home.findSelectionByUserId">
 		<query>
-			SELECT NEW com.hiperium.common.services.dto.SelectionDTO(h.home.id, h.home.name) 
+			SELECT NEW com.hiperium.commons.client.dto.SelectionDTO(h.home.id, h.home.name) 
 				FROM UserHome h WHERE h.pk.userId = :userId
 		</query>
 	</named-query>
@@ -26,7 +26,7 @@
 	</named-query>
 	<named-query name="Profile.findByUserAndHomeId">
 		<query>
-			SELECT NEW com.hiperium.common.services.dto.SelectionDTO(p.id, p.name) 
+			SELECT NEW com.hiperium.commons.client.dto.SelectionDTO(p.id, p.name) 
 				FROM UserProfile up JOIN up.profile p
 				WHERE up.pk.userId    = :userId
 				AND   p.homeId        = :homeId 

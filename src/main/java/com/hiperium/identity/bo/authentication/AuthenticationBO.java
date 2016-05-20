@@ -16,9 +16,9 @@ import javax.ejb.Local;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
 
 /**

@@ -21,10 +21,10 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.EnumAccessChannel;
-import com.hiperium.common.services.EnumAuthenticationResult;
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.commons.services.EnumAccessChannel;
+import com.hiperium.commons.services.EnumAuthenticationResult;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.vo.UserSessionVO;
 
 /**
  * This bean is used only for user session validation and resource access

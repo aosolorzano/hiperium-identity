@@ -24,7 +24,7 @@ import org.wildfly.clustering.singleton.election.NamePreference;
 import org.wildfly.clustering.singleton.election.PreferredSingletonElectionPolicy;
 import org.wildfly.clustering.singleton.election.SimpleSingletonElectionPolicy;
 
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 
 /**
  *

@@ -18,9 +18,9 @@ import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.exception.EnumInformationException;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.exception.EnumInformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.UpdatePasswordBO;
@@ -52,9 +52,9 @@ public class UpdatePasswordImpl extends GenericBO implements UpdatePasswordBO {
 		this.log.debug("updateUserPassword - START");
 		User user = super.getDaoFactory().getUserDAO().findById(userId, false, true);
 		if(user == null) {
-			throw InformationException.generate(EnumInformationException.USER_NOT_FOUND);
+			throw new InformationException(EnumInformationException.USER_NOT_FOUND.getCode());
 		} else if(!new HashMd5().hash(prevPassword).equals(user.getPassword())){
-			throw InformationException.generate(EnumInformationException.USER_PREVIOUS_PASS_NOT_MATCH);
+			throw new InformationException(EnumInformationException.USER_PREVIOUS_PASS_NOT_MATCH.getCode());
 		} else {
 			user.setPassword(new HashMd5().hash(newPassword));
 			super.getDaoFactory().getUserDAO().update(user);

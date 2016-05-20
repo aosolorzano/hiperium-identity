@@ -41,7 +41,7 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 
 /**
  * Implements the main methods to access data in an Enterprise Application.

@@ -20,9 +20,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.module.ProfileFunctionalityBO;
 import com.hiperium.identity.model.security.ProfileFunctionality;
 import com.hiperium.identity.restful.generic.GenericResource;

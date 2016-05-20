@@ -18,13 +18,13 @@ import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.EnumAccessChannel;
-import com.hiperium.common.services.EnumAuthenticationResult;
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.exception.EnumInformationException;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.EnumAccessChannel;
+import com.hiperium.commons.services.EnumAuthenticationResult;
+import com.hiperium.commons.services.exception.EnumInformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.SessionManagerBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
@@ -70,14 +70,14 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		User user = this.daoFactory.getUserDAO().findByEmail(userEmail);
 		if(user == null) {
 			this.log.error("Error: No User found with email: " + userEmail);
-			throw InformationException.generate(EnumInformationException.USER_NOT_FOUND);
+			throw new InformationException(EnumInformationException.USER_NOT_FOUND.getCode());
 		}
 		
 		// Validates user password
 		HashMd5 md5Converter = new HashMd5();
 		String md5Password = md5Converter.hash(userPassword);
 		if(!user.getPassword().equals(md5Password)) {
-			throw InformationException.generate(EnumInformationException.USER_NOT_FOUND);
+			throw new InformationException(EnumInformationException.USER_NOT_FOUND.getCode());
 		}
 		
 		// Creates the initial session register
@@ -109,7 +109,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		Long gatewayId = this.daoFactory.getHomeGatewayDAO().findGatewayIdByHomeSerial(homeId, serial);
 		if(gatewayId == 0L || gatewayId == null) {
 			this.log.error("Error: No Home Gateway found with serial: " + serial);
-			throw InformationException.generate(EnumInformationException.USER_NOT_FOUND);
+			throw new InformationException(EnumInformationException.USER_NOT_FOUND.getCode());
 		}
 		
 		// Creates the user session register to be persisted in the data base
@@ -147,12 +147,12 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		
 		// VALIDATES USER STATE
 		if (userHome == null || !userHome.getActive()) {
-			throw InformationException.generate(EnumInformationException.USER_ACCOUNT_LOCKED);
+			throw new InformationException(EnumInformationException.USER_ACCOUNT_LOCKED.getCode());
 		}
 		
 		// VALIDATES HOME STATE
 		if (!userHome.getHome().getCloudEnable()) {
-			throw InformationException.generate(EnumInformationException.HOME_CLOUD_NOT_ENABLED);
+			throw new InformationException(EnumInformationException.HOME_CLOUD_NOT_ENABLED.getCode());
 		}
 		
 		// UPDATE SESSION REGISTER

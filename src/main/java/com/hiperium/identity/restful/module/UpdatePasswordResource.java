@@ -23,11 +23,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.exception.PropertyValidationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.exception.PropertyValidationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.UpdatePasswordBO;
 import com.hiperium.identity.common.dto.UpdatePasswordDTO;

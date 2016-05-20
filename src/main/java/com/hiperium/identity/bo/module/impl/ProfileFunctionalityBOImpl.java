@@ -16,9 +16,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.exception.EnumInformationException;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.exception.EnumInformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.ProfileFunctionalityBO;
 import com.hiperium.identity.model.security.ProfileFunctionality;
@@ -45,16 +45,16 @@ public class ProfileFunctionalityBOImpl extends GenericBO implements ProfileFunc
 		// You can not homeSelection the functionality profile for the
 		// Administrator.
 		if (1 == register.getPk().getProfileId()) {
-			throw InformationException.generate(EnumInformationException.ADMIN_PROFILE_FUNCTION_UPDATED);
+			throw new InformationException(EnumInformationException.ADMIN_PROFILE_FUNCTION_UPDATED.getCode());
 		}
 		// VALIDATES THE ACCESS TIME
 		if (register.getHourOfHourFrom() > register.getHourOfHourUntil()) {
-			throw InformationException.generate(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS);
+			throw new InformationException(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS.getCode());
 		} else if (register.getHourOfHourFrom() == register.getHourOfHourUntil()
 				&& register.getMinuteOfHourFrom() > register.getMinuteOfHourUntil()) {
-			throw InformationException.generate(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS);
+			throw new InformationException(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS.getCode());
 		} else if (register.getHourFrom().equals(register.getHourUntil())) {
-			throw InformationException.generate(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS);
+			throw new InformationException(EnumInformationException.INVALID_ACCESS_TIME_PARAMETERS.getCode());
 		}
 		// IF VALIDATION PASS, UPDATES THE OBJECT
 		register = super.getDaoFactory().getProfileFunctionalityDAO().update(register);
@@ -73,7 +73,7 @@ public class ProfileFunctionalityBOImpl extends GenericBO implements ProfileFunc
 		// You can not delete the functionality profile for the
 		// Administrator.
 		if (1 == profileFunctionality.getPk().getProfileId()) {
-			throw InformationException.generate(EnumInformationException.ADMIN_PROFILE_FUNCTION_REMOVED);
+			throw new InformationException(EnumInformationException.ADMIN_PROFILE_FUNCTION_REMOVED.getCode());
 		} else {
 			super.getDaoFactory().getProfileFunctionalityDAO().delete(profileFunctionality.getPk());
 		}

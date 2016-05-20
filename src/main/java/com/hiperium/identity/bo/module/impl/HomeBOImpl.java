@@ -19,9 +19,9 @@ import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.dto.SelectionDTO;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.client.dto.SelectionDTO;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.HomeBO;
 import com.hiperium.identity.model.security.Home;

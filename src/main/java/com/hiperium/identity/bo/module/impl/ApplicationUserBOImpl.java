@@ -18,7 +18,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.ApplicationUserBO;
 

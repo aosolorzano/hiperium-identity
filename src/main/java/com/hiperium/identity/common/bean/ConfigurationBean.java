@@ -34,8 +34,8 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import com.datastax.driver.core.Cluster;
-import com.hiperium.common.services.gson.GsonConverterUtil;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.client.gson.GsonConverterUtil;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 
 /**
  * 

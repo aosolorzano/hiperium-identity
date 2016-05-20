@@ -24,10 +24,10 @@ import javax.ws.rs.core.Application;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.utils.CloseableUtils;
 
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.identity.IdentityRegistryPath;
-import com.hiperium.common.services.restful.identity.IdentityRestfulPath;
-import com.hiperium.common.services.restful.registry.ServiceRegister;
+import com.hiperium.commons.client.registry.ServiceRegister;
+import com.hiperium.commons.client.registry.path.IdentityRegistryPath;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
 import com.hiperium.identity.common.bean.ConfigurationBean;
 
 /**
@@ -38,10 +38,10 @@ import com.hiperium.identity.common.bean.ConfigurationBean;
  *
  */
 @ApplicationPath(IdentityRestfulPath.IDENTITY_PATH)
-public class RestfulApplication extends Application {
+public class IdentityApplication extends Application {
 
 	/** The LOGGER property for logger messages. */
-	private static final HiperiumLogger LOGGER = HiperiumLogger.getLogger(RestfulApplication.class);
+	private static final HiperiumLogger LOGGER = HiperiumLogger.getLogger(IdentityApplication.class);
 
 	/** The property client. */
 	@Inject

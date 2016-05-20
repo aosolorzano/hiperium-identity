@@ -27,9 +27,9 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.beanutils.BeanPropertyValueChangeClosure;
 import org.apache.commons.collections.CollectionUtils;
 
-import com.hiperium.common.services.dto.SelectionDTO;
-import com.hiperium.common.services.exception.InformationException;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.client.dto.SelectionDTO;
+import com.hiperium.commons.client.exception.InformationException;
+import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.ProfileBO;
 import com.hiperium.identity.dao.list.ListOperationDAO;

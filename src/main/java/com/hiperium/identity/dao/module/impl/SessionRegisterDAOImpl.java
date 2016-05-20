@@ -24,9 +24,9 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import com.datastax.driver.core.BoundStatement;
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.bean.BeanUtils;
-import com.hiperium.common.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.bean.BeanUtils;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.model.SessionRegister;
 import com.hiperium.identity.common.bean.CassandraConnectorBean;
 import com.hiperium.identity.dao.module.SessionRegisterDAO;
 

@@ -31,13 +31,13 @@ import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
-import com.hiperium.common.services.audit.UserStatistic;
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.restful.audit.AuditRegistryPath;
-import com.hiperium.common.services.restful.audit.AuditService;
-import com.hiperium.common.services.restful.dto.ServiceDetailsDTO;
+import com.hiperium.commons.client.dto.ServiceDetailsDTO;
+import com.hiperium.commons.client.registry.path.LoggingRegistryPath;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.model.UserStatistic;
 import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.generic.GenericBO;
+import com.hiperium.identity.service.client.AuditService;
 
 /**
  * This service is the implementation of the interface DeviceLocal and manages
@@ -76,7 +76,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 		this.serializer = new JsonInstanceSerializer<ServiceDetailsDTO>(ServiceDetailsDTO.class); // Payload Serializer
 		this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceDetailsDTO.class)
 				.client(this.curatorClient)
-				.basePath(AuditRegistryPath.BASE_PATH)
+				.basePath(LoggingRegistryPath.BASE_PATH)
 				.serializer(this.serializer)
 				.build();
 	}
@@ -87,7 +87,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	@Override
 	public UserStatistic findUserStatisticById(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("findById - START");
-		return this.auditService.findByUserStatisticId(this.getServiceURI(AuditRegistryPath.FIND_USER_STATISTIC_BY_USER_ID), userId, token);
+		return this.auditService.findByUserStatisticId(this.getServiceURI(LoggingRegistryPath.FIND_USER_STATISTIC_BY_USER_ID), userId, token);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class AuditManagerBOImpl extends GenericBO implements AuditManagerBO {
 	@Override
 	public void updateLastPasswordChange(@NotNull @Min(value = 1L) Long userId, @NotNull String token) throws Exception {
 		this.log.debug("updateLastPasswordChange - START");
-		this.auditService.updateLastPasswordChange(this.getServiceURI(AuditRegistryPath.UPDATE_LAST_USER_PASS_BY_USER_ID), userId, token); 
+		this.auditService.updateLastPasswordChange(this.getServiceURI(LoggingRegistryPath.UPDATE_LAST_USER_PASS_BY_USER_ID), userId, token); 
 		this.log.debug("updateLastPasswordChange - END");
 	}
 	

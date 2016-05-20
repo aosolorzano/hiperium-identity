@@ -17,7 +17,7 @@ import java.util.UUID;
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.audit.SessionRegister;
+import com.hiperium.commons.services.model.SessionRegister;
 
 /**
  * 

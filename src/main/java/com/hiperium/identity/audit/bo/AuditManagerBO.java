@@ -16,7 +16,7 @@ import javax.ejb.Local;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.audit.UserStatistic;
+import com.hiperium.commons.services.model.UserStatistic;
 
 /**
  * 

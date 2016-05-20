@@ -18,7 +18,7 @@ import javax.ejb.Local;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.common.services.exception.InformationException;
+import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.identity.model.security.Home;
 import com.hiperium.identity.model.security.Profile;
 import com.hiperium.identity.model.security.User;

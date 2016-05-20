@@ -18,9 +18,9 @@ import javax.inject.Inject;
 import org.jboss.as.server.CurrentServiceContainer;
 import org.jboss.msc.service.ServiceController;
 
-import com.hiperium.common.services.audit.SessionRegister;
-import com.hiperium.common.services.logger.HiperiumLogger;
-import com.hiperium.common.services.vo.UserSessionVO;
+import com.hiperium.commons.services.logger.HiperiumLogger;
+import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.bo.module.SessionManagerBO;
 import com.hiperium.identity.common.bean.SessionManagerBean;
 import com.hiperium.identity.common.ha.HASingletonService;

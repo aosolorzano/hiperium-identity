@@ -10,7 +10,7 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  * 
  */
-package com.hiperium.identity.bo.utils;
+package com.hiperium.identity.dao;
 
 /**
  * This enumeration specifies the names of Named Queries that exists in the

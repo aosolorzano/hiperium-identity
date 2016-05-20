@@ -12,9 +12,7 @@
  */
 package com.hiperium.identity.restful.module;
 
-import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.EJB;
@@ -38,18 +36,13 @@ import com.hiperium.commons.client.dto.HomeResponseDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.PropertyValidationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.model.SessionRegister;
-import com.hiperium.commons.services.model.UserStatistic;
 import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
 import com.hiperium.commons.services.vo.UserSessionVO;
-import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
-import com.hiperium.identity.bo.module.ApplicationUserBO;
 import com.hiperium.identity.bo.module.UserBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
-import com.hiperium.identity.common.dto.UserAuthResponseDTO;
+import com.hiperium.identity.common.dto.UserResponseDTO;
 import com.hiperium.identity.common.dto.UserCredentialDTO;
-import com.hiperium.identity.model.security.User;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -61,7 +54,7 @@ import com.hiperium.identity.restful.generic.GenericResource;
 @Path(IdentityRestfulPath.AUTHENTICATION)
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class AuthenticationResource extends GenericResource<UserAuthResponseDTO> {
+public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 	
 	/** The property log. */
     @Inject
@@ -74,14 +67,6 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
 	/** The userBO property. */
 	@EJB
 	private UserBO userBO;
-	
-	/** The applicationUserBO property. */
-	@EJB
-	private ApplicationUserBO applicationUserBO;
-	
-	/** The property auditManagerBO. */
-	@EJB
-	private AuditManagerBO auditManagerBO;
 	
 	/** The property servletRequest. */
 	@Context
@@ -97,7 +82,7 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
      */
     @POST
     @Path(IdentityRestfulPath.USER_AUTH)
-    public UserAuthResponseDTO userAuthentication(@NotNull UserCredentialDTO credentialsDTO) 
+    public UserResponseDTO userAuthentication(@NotNull UserCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("userAuthentication - BEGIN");
        
@@ -110,35 +95,10 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
         // Creates a session register with a new HTTP session
         String userAgent = super.getServletRequest().getHeader("User-Agent");
         String remoteIpAddress = super.getServletRequest().getRemoteAddr();
-        SessionRegister sessionRegister = this.authenticationBO.userAuthentication(credentialsDTO.getEmail(), credentialsDTO.getPassword(), userAgent, remoteIpAddress);
-     		
-        // Construct the response
-        User user = this.userBO.findById(sessionRegister.getUserId(), false, sessionRegister.getTokenId());
-     	UserAuthResponseDTO dto = new UserAuthResponseDTO();
-     	dto.setId(user.getId());
-     	dto.setUsername(user.getFirstname());
-     	dto.setLanguage(user.getLanguageId());
-     	dto.setAuthorizationToken(sessionRegister.getTokenId());
-     	
-     	// Verify if user needs to change the password
- 		UserStatistic userStatistic;
- 		try {
- 			userStatistic = this.auditManagerBO.findUserStatisticById(sessionRegister.getUserId(), sessionRegister.getTokenId());
- 			Calendar lastChangedPassword = Calendar.getInstance();
- 			lastChangedPassword.setTime(userStatistic.getLastPasswordChange());
- 			// TODO: CASE BASED ON BUSINESS RULE, FOR TESTING WE ARE USING 3 MONTHS
- 			lastChangedPassword.add(Calendar.MONTH, 3);
- 			if (lastChangedPassword.before(Calendar.getInstance())) {
- 	        	dto.setChangePassword(Boolean.TRUE);
- 	        } else {
- 	        	dto.setChangePassword(Boolean.FALSE);
- 	        }
- 		} catch (Exception e) {
- 			this.log.error(e.getMessage());
- 		}
+        UserResponseDTO responseDTO = this.authenticationBO.userAuthentication(credentialsDTO.getEmail(), credentialsDTO.getPassword(), userAgent, remoteIpAddress);
      		
         this.log.debug("userAuthentication - END");
-        return dto;
+        return responseDTO;
     }
     
     /**
@@ -164,17 +124,10 @@ public class AuthenticationResource extends GenericResource<UserAuthResponseDTO>
         // Creates a session register with a new HTTP session
         String userAgent = super.getServletRequest().getHeader("User-Agent");
         String remoteIpAddress = super.getServletRequest().getRemoteAddr();
-        SessionRegister sessionRegister = this.authenticationBO.homeAuthentication(credentialsDTO.getId(), credentialsDTO.getSerial(), userAgent, remoteIpAddress);
- 		
- 		// Find the JBoss Application User credentials to be send to the Raspberry for Queue connections.
- 		List<String> register = this.applicationUserBO.findByRole("hiperium");
- 		HomeResponseDTO dto = new HomeResponseDTO();
- 		dto.setParam1(register.get(0));
- 		dto.setParam2(register.get(1));
- 		dto.setParam3(sessionRegister.getTokenId());
+        HomeResponseDTO responseDTO = this.authenticationBO.homeAuthentication(credentialsDTO.getId(), credentialsDTO.getSerial(), userAgent, remoteIpAddress);
      		
         this.log.debug("homeAuthentication - END");
-        return dto;
+        return responseDTO;
     }
 	
     /**

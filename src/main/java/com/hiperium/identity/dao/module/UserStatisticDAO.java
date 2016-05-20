@@ -10,13 +10,11 @@
  * Copyright 2014 Andres Solorzano. All rights reserved.
  * 
  */
-package com.hiperium.identity.bo.module;
-
-import java.util.List;
+package com.hiperium.identity.dao.module;
 
 import javax.ejb.Local;
-import javax.persistence.NoResultException;
-import javax.validation.constraints.NotNull;
+
+import com.hiperium.commons.services.model.UserStatistic;
 
 /**
  * 
@@ -24,13 +22,18 @@ import javax.validation.constraints.NotNull;
  * 
  */
 @Local
-public interface ApplicationUserBO {
+public interface UserStatisticDAO {
 
 	/**
 	 * 
-	 * @param role
+	 * @param userId
 	 * @return
-	 * @throws NoResultException
 	 */
-	List<String> findByRole(@NotNull String role) throws NoResultException;
+	UserStatistic findById(Long userId);
+
+	/**
+	 * 
+	 * @param userId
+	 */
+	void updateLastPasswordChange(Long userId);
 }

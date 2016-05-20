@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.StringUtils;
 
 import com.hiperium.commons.client.exception.InformationException;
-import com.hiperium.identity.bo.utils.EnumNamedQuerySecurity;
+import com.hiperium.identity.dao.EnumNamedQuerySecurity;
 import com.hiperium.identity.dao.GenericDAO;
 import com.hiperium.identity.dao.module.UserDAO;
 import com.hiperium.identity.model.security.User;

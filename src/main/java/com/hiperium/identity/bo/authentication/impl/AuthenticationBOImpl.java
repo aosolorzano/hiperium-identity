@@ -12,25 +12,33 @@
  */
 package com.hiperium.identity.bo.authentication.impl;
 
+import java.util.Calendar;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.hiperium.commons.client.dto.HomeResponseDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.EnumAccessChannel;
 import com.hiperium.commons.services.EnumAuthenticationResult;
 import com.hiperium.commons.services.exception.EnumInformationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.commons.services.model.SessionRegister;
+import com.hiperium.commons.services.model.UserStatistic;
 import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.SessionManagerBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
+import com.hiperium.identity.common.dto.UserResponseDTO;
 import com.hiperium.identity.common.utils.HashMd5;
 import com.hiperium.identity.dao.factory.DataAccessFactory;
+import com.hiperium.identity.dao.module.ApplicationUserDAO;
 import com.hiperium.identity.dao.module.SessionRegisterDAO;
+import com.hiperium.identity.dao.module.UserStatisticDAO;
 import com.hiperium.identity.model.security.User;
 import com.hiperium.identity.model.security.UserHome;
 import com.hiperium.identity.model.security.UserHomePK;
@@ -55,6 +63,14 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	@EJB
 	private SessionRegisterDAO sessionRegisterDAO;
 	
+	/** The property userStatisticDAO. */
+	@EJB
+	private UserStatisticDAO userStatisticDAO;
+	
+	/** The applicationUserDAO property. */
+	@EJB
+	private ApplicationUserDAO applicationUserDAO;
+	
 	/** The property sessionManagerBO. */
 	@EJB
 	private SessionManagerBO sessionManagerBO;
@@ -63,7 +79,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public SessionRegister userAuthentication(@NotNull String userEmail, @NotNull String userPassword, @NotNull String userAgent, 
+	public UserResponseDTO userAuthentication(@NotNull String userEmail, @NotNull String userPassword, @NotNull String userAgent, 
 			@NotNull String remoteIpAddress) throws InformationException {
 		this.log.debug("userAuthentication - BEGIN");
 		
@@ -92,16 +108,40 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		
 		// Add user session register to the singleton map
 		this.sessionManagerBO.addUserSessionRegister(sessionRegister);
-				
+		
+		// Construct the response
+     	UserResponseDTO dto = new UserResponseDTO();
+     	dto.setId(user.getId());
+     	dto.setUsername(user.getFirstname());
+     	dto.setLanguage(user.getLanguageId());
+     	dto.setAuthorizationToken(sessionRegister.getTokenId());
+     	
+     	// Verify if user needs to change the password
+ 		UserStatistic userStatistic;
+ 		try {
+ 			userStatistic = this.userStatisticDAO.findById(sessionRegister.getUserId());
+ 			Calendar lastChangedPassword = Calendar.getInstance();
+ 			lastChangedPassword.setTime(userStatistic.getLastPasswordChange());
+ 			// TODO: CASE BASED ON BUSINESS RULE, FOR TESTING WE ARE USING 3 MONTHS
+ 			lastChangedPassword.add(Calendar.MONTH, 3);
+ 			if (lastChangedPassword.before(Calendar.getInstance())) {
+ 	        	dto.setChangePassword(Boolean.TRUE);
+ 	        } else {
+ 	        	dto.setChangePassword(Boolean.FALSE);
+ 	        }
+ 		} catch (Exception e) {
+ 			this.log.error(e.getMessage());
+ 		}
+		
 		this.log.debug("userAuthentication - END");
-		return sessionRegister;
+		return dto;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public SessionRegister homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
+	public HomeResponseDTO homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
 			@NotNull String userAgent, @NotNull String remoteIpAddress) throws InformationException {
 		this.log.debug("homeAuthentication - BEGIN");
 		
@@ -125,9 +165,16 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		
 		// Add user session register to the singleton map
 		this.sessionManagerBO.addHomeSessionRegister(sessionRegister);
-				
+		
+		// Find the JBoss Application User credentials to be send to the Raspberry for Queue connections.
+ 		List<String> register = this.applicationUserDAO.findByRole("hiperium");
+ 		HomeResponseDTO dto = new HomeResponseDTO();
+ 		dto.setParam1(register.get(0));
+ 		dto.setParam2(register.get(1));
+ 		dto.setParam3(sessionRegister.getTokenId());
+		 		
 		this.log.debug("homeAuthentication - END");
-		return sessionRegister;
+		return dto;
 	}
 	
 	/**

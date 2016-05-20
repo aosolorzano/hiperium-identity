@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 import com.hiperium.commons.client.dto.SelectionDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.identity.bo.utils.EnumNamedQuerySecurity;
+import com.hiperium.identity.dao.EnumNamedQuerySecurity;
 import com.hiperium.identity.dao.GenericDAO;
 import com.hiperium.identity.dao.module.HomeDAO;
 import com.hiperium.identity.model.security.Home;

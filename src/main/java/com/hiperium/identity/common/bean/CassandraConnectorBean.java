@@ -56,6 +56,10 @@ public class CassandraConnectorBean {
 	/** The property UPDATE_LOGOUT_DATE_QUERY. */
 	private static final String UPDATE_LOGOUT_DATE_QUERY = "UPDATE haudit.aud_session_register SET logout_date=? WHERE id=?;";
 	
+	/** The property FIND_USER_STATISTIC_QUERY. */
+	private static final String FIND_USER_STATISTIC_QUERY = "SELECT user_id,failed_attempts,last_failed_attempts,last_password_change "
+			+ "FROM haudit.aud_user_statistic WHERE user_id=?;";
+	
 	/** The property log. */
 	@Inject
 	private HiperiumLogger log;
@@ -72,6 +76,8 @@ public class CassandraConnectorBean {
 	private PreparedStatement updateHomeSelectionPS;
 	/** The property updateLogoutDatePS. */
 	private PreparedStatement updateLogoutDatePS;
+	/** The property findUserStatisticPS. */
+	private PreparedStatement findUserStatisticPS;
 	
 	/**
 	 * Component constructor.
@@ -92,7 +98,9 @@ public class CassandraConnectorBean {
 		this.updateHomeSelectionPS = this.session.prepare(UPDATE_HOME_SELECTION_QUERY);
 		// Prepared statement for logout audit
 		this.updateLogoutDatePS = this.session.prepare(UPDATE_LOGOUT_DATE_QUERY);
-				
+		// Prepared statement to find user statistic
+		this.findUserStatisticPS = this.session.prepare(FIND_USER_STATISTIC_QUERY);
+		
 		this.log.debug("init() - END");
 	}
 
@@ -127,4 +135,10 @@ public class CassandraConnectorBean {
 		return updateLogoutDatePS;
 	}
 	
+	/**
+	 * @return the findUserStatisticPS
+	 */
+	public PreparedStatement getFindUserStatisticPS() {
+		return findUserStatisticPS;
+	}
 }

@@ -21,10 +21,10 @@ import javax.validation.constraints.NotNull;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.EnumInformationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.identity.audit.bo.AuditManagerBO;
 import com.hiperium.identity.bo.generic.GenericBO;
 import com.hiperium.identity.bo.module.UpdatePasswordBO;
 import com.hiperium.identity.common.utils.HashMd5;
+import com.hiperium.identity.dao.module.UserStatisticDAO;
 import com.hiperium.identity.model.security.User;
 
 /**
@@ -39,9 +39,9 @@ public class UpdatePasswordImpl extends GenericBO implements UpdatePasswordBO {
     @Inject
     protected HiperiumLogger log;
     
-	/** The property auditManagerBO. */
+	/** The property userStatisticsDAO. */
 	@EJB
-	private AuditManagerBO auditManagerBO;
+	private UserStatisticDAO userStatisticsDAO;
 	
 	/**
 	 * {@inheritDoc}
@@ -59,7 +59,7 @@ public class UpdatePasswordImpl extends GenericBO implements UpdatePasswordBO {
 			user.setPassword(new HashMd5().hash(newPassword));
 			super.getDaoFactory().getUserDAO().update(user);
 			try {
-				this.auditManagerBO.updateLastPasswordChange(user.getId(), tokenId);
+				this.userStatisticsDAO.updateLastPasswordChange(user.getId());
 			} catch (Exception e) {
 				throw new InformationException(e.getMessage());
 			}

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
-public class UserAuthResponseDTO implements Serializable {
+public class UserResponseDTO implements Serializable {
 
 	/**
 	 * The property serialVersionUID.
@@ -54,7 +54,7 @@ public class UserAuthResponseDTO implements Serializable {
 	/**
 	 * Default constructor.
 	 */
-	public UserAuthResponseDTO() {
+	public UserResponseDTO() {
 		// Nothing to do.
 	}
 

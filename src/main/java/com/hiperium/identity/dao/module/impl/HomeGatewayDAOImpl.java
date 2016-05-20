@@ -23,7 +23,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.identity.bo.utils.EnumNamedQuerySecurity;
+import com.hiperium.identity.dao.EnumNamedQuerySecurity;
 import com.hiperium.identity.dao.GenericDAO;
 import com.hiperium.identity.dao.module.HomeGatewayDAO;
 import com.hiperium.identity.model.security.HomeGateway;

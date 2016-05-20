@@ -25,7 +25,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.hiperium.commons.client.dto.SelectionDTO;
-import com.hiperium.identity.bo.utils.EnumNamedQuerySecurity;
+import com.hiperium.identity.dao.EnumNamedQuerySecurity;
 import com.hiperium.identity.dao.GenericDAO;
 import com.hiperium.identity.dao.module.ProfileDAO;
 import com.hiperium.identity.model.security.Profile;

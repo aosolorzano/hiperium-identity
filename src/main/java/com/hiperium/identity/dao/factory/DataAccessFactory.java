@@ -22,6 +22,7 @@ import com.hiperium.identity.dao.module.ProfileDAO;
 import com.hiperium.identity.dao.module.ProfileFunctionalityDAO;
 import com.hiperium.identity.dao.module.UserDAO;
 import com.hiperium.identity.dao.module.UserHomeDAO;
+import com.hiperium.identity.dao.module.UserStatisticDAO;
 
 /**
  * Abstract Factory class that contains references to all DAO objects.
@@ -59,6 +60,10 @@ public class DataAccessFactory {
 	/** The property homeGatewayDAO */
 	@EJB
 	private HomeGatewayDAO homeGatewayDAO;
+	
+	/** The property userStatisticsDAO */
+	@EJB
+	private UserStatisticDAO userStatisticsDAO;
 
 	/**
 	 * Class constructor.
@@ -121,5 +126,12 @@ public class DataAccessFactory {
 	 */
 	public HomeGatewayDAO getHomeGatewayDAO() {
 		return homeGatewayDAO;
+	}
+	
+	/**
+	 * @return the userStatisticsDAO
+	 */
+	public UserStatisticDAO getUserStatisticsDAO() {
+		return userStatisticsDAO;
 	}
 }

@@ -16,10 +16,12 @@ import javax.ejb.Local;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.hiperium.commons.client.dto.HomeResponseDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.model.SessionRegister;
 import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
+import com.hiperium.identity.common.dto.UserResponseDTO;
 
 /**
  * 
@@ -38,7 +40,7 @@ public interface AuthenticationBO {
 	 * @return
 	 * @throws InformationException
 	 */
-	SessionRegister userAuthentication(@NotNull String userEmail, @NotNull String userPassword,
+	UserResponseDTO userAuthentication(@NotNull String userEmail, @NotNull String userPassword,
 			@NotNull String userAgent, @NotNull String remoteIpAddress) throws InformationException;
 
 	/**
@@ -50,7 +52,7 @@ public interface AuthenticationBO {
 	 * @return
 	 * @throws InformationException
 	 */
-	SessionRegister homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
+	HomeResponseDTO homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
 			@NotNull String userAgent, @NotNull String remoteIpAddress) throws InformationException;
 
 	/**

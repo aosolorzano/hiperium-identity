@@ -35,7 +35,7 @@ import com.hiperium.commons.client.dto.HomeCredentialDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.PropertyValidationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.UserBO;

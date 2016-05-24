@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.module.SessionManagerBO;
 
 

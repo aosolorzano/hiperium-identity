@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.module.UserBO;
 import com.hiperium.identity.model.security.User;
 import com.hiperium.identity.restful.generic.GenericResource;

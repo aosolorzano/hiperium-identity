@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.module.ProfileFunctionalityBO;
 import com.hiperium.identity.model.security.ProfileFunctionality;
 import com.hiperium.identity.restful.generic.GenericResource;

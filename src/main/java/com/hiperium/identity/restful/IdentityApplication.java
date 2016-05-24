@@ -27,7 +27,7 @@ import org.apache.curator.utils.CloseableUtils;
 import com.hiperium.commons.client.registry.ServiceRegister;
 import com.hiperium.commons.client.registry.path.IdentityRegistryPath;
 import com.hiperium.commons.services.logger.HiperiumLogger;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.identity.common.bean.ConfigurationBean;
 
 /**

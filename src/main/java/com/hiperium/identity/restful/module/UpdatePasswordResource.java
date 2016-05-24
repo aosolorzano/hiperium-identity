@@ -27,7 +27,7 @@ import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.PropertyValidationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
 import com.hiperium.commons.services.model.SessionRegister;
-import com.hiperium.commons.services.restful.path.IdentityRestfulPath;
+import com.hiperium.commons.services.path.IdentityRestfulPath;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.UpdatePasswordBO;
 import com.hiperium.identity.common.dto.UpdatePasswordDTO;

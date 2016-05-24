@@ -32,7 +32,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.hiperium.commons.client.dto.HomeCredentialDTO;
-import com.hiperium.commons.client.dto.HomeResponseDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.PropertyValidationException;
 import com.hiperium.commons.services.logger.HiperiumLogger;
@@ -41,8 +40,8 @@ import com.hiperium.commons.services.vo.UserSessionVO;
 import com.hiperium.identity.bo.authentication.AuthenticationBO;
 import com.hiperium.identity.bo.module.UserBO;
 import com.hiperium.identity.common.dto.HomeSelectionDTO;
-import com.hiperium.identity.common.dto.UserResponseDTO;
 import com.hiperium.identity.common.dto.UserCredentialDTO;
+import com.hiperium.identity.common.dto.UserResponseDTO;
 import com.hiperium.identity.restful.generic.GenericResource;
 
 /**
@@ -111,7 +110,7 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
      */
     @POST
     @Path(IdentityRestfulPath.HOME_AUTH)
-    public HomeResponseDTO homeAuthentication(@NotNull HomeCredentialDTO credentialsDTO) 
+    public Response homeAuthentication(@NotNull HomeCredentialDTO credentialsDTO) 
     		throws InformationException, PropertyValidationException {
         this.log.debug("homeAuthentication - BEGIN");
        
@@ -124,10 +123,13 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
         // Creates a session register with a new HTTP session
         String userAgent = super.getServletRequest().getHeader("User-Agent");
         String remoteIpAddress = super.getServletRequest().getRemoteAddr();
-        HomeResponseDTO responseDTO = this.authenticationBO.homeAuthentication(credentialsDTO.getId(), credentialsDTO.getSerial(), userAgent, remoteIpAddress);
+        String tokenResponse = this.authenticationBO.homeAuthentication(credentialsDTO.getId(), credentialsDTO.getSerial(), userAgent, remoteIpAddress);
      		
         this.log.debug("homeAuthentication - END");
-        return responseDTO;
+        return Response.status(Response.Status.OK)
+        		.entity(tokenResponse)
+        		.type(MediaType.TEXT_PLAIN)
+        		.build();
     }
 	
     /**
@@ -170,7 +172,7 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isUserLoggedIn - END");
-		return Response.ok().build();
+		return super.ok();
 	}
 	
 	/**
@@ -187,7 +189,7 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isHomeLoggedIn - END");
-		return Response.ok().build();
+		return super.ok();
 	}
 	
 	/**
@@ -215,6 +217,6 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 		this.log.debug("logout - BEGIN");
 		this.authenticationBO.endUserSession(super.getTokenId());
 		this.log.debug("logout - END");
-		return Response.ok().build();
+		return super.ok();
 	}
 }

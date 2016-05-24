@@ -74,7 +74,8 @@ public class TokenFilter implements Filter {
 		LOGGER.debug("Accessing To: ".concat(path));
 		
 		// Exclude some URLs used for validation propose
-		if(!(path.endsWith(IdentityRestfulPath.IS_USER_LOGGED_IN) || 
+		if(!(path.endsWith(IdentityRestfulPath.IS_USER_LOGGED_IN) ||
+				path.endsWith(IdentityRestfulPath.IS_HOME_LOGGED_IN) ||
 				path.endsWith(IdentityRestfulPath.USER_AUTH) || 
 				path.endsWith(IdentityRestfulPath.HOME_AUTH))) {
 			// Get Token ID and validates it against session map.

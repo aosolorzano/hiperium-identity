@@ -13,7 +13,6 @@
 package com.hiperium.identity.bo.authentication.impl;
 
 import java.util.Calendar;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,7 +20,6 @@ import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.hiperium.commons.client.dto.HomeResponseDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.EnumAccessChannel;
 import com.hiperium.commons.services.EnumAuthenticationResult;
@@ -36,7 +34,6 @@ import com.hiperium.identity.common.dto.HomeSelectionDTO;
 import com.hiperium.identity.common.dto.UserResponseDTO;
 import com.hiperium.identity.common.utils.HashMd5;
 import com.hiperium.identity.dao.factory.DataAccessFactory;
-import com.hiperium.identity.dao.module.ApplicationUserDAO;
 import com.hiperium.identity.dao.module.SessionRegisterDAO;
 import com.hiperium.identity.dao.module.UserStatisticDAO;
 import com.hiperium.identity.model.security.User;
@@ -66,10 +63,6 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	/** The property userStatisticDAO. */
 	@EJB
 	private UserStatisticDAO userStatisticDAO;
-	
-	/** The applicationUserDAO property. */
-	@EJB
-	private ApplicationUserDAO applicationUserDAO;
 	
 	/** The property sessionManagerBO. */
 	@EJB
@@ -141,7 +134,7 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HomeResponseDTO homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
+	public String homeAuthentication(@NotNull @Min(value = 1L) Long homeId, @NotNull String serial,
 			@NotNull String userAgent, @NotNull String remoteIpAddress) throws InformationException {
 		this.log.debug("homeAuthentication - BEGIN");
 		
@@ -165,16 +158,8 @@ public class AuthenticationBOImpl implements AuthenticationBO {
 		
 		// Add user session register to the singleton map
 		this.sessionManagerBO.addHomeSessionRegister(sessionRegister);
-		
-		// Find the JBoss Application User credentials to be send to the Raspberry for Queue connections.
- 		List<String> register = this.applicationUserDAO.findByRole("hiperium");
- 		HomeResponseDTO dto = new HomeResponseDTO();
- 		dto.setParam1(register.get(0));
- 		dto.setParam2(register.get(1));
- 		dto.setParam3(sessionRegister.getTokenId());
-		 		
 		this.log.debug("homeAuthentication - END");
-		return dto;
+		return sessionRegister.getTokenId();
 	}
 	
 	/**

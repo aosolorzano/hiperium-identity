@@ -15,7 +15,6 @@ package com.hiperium.identity.dao.factory;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 
-import com.hiperium.identity.dao.module.ApplicationUserDAO;
 import com.hiperium.identity.dao.module.HomeDAO;
 import com.hiperium.identity.dao.module.HomeGatewayDAO;
 import com.hiperium.identity.dao.module.ProfileDAO;
@@ -32,10 +31,6 @@ import com.hiperium.identity.dao.module.UserStatisticDAO;
  */
 @ApplicationScoped
 public class DataAccessFactory {
-
-	/** The property applicationUserDAO */
-	@EJB
-	private ApplicationUserDAO applicationUserDAO;
 
 	/** The property homeDAO */
 	@EJB
@@ -70,14 +65,6 @@ public class DataAccessFactory {
 	 */
 	public DataAccessFactory() {
 		// Nothing to do
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public ApplicationUserDAO getApplicationUserDAO() {
-		return applicationUserDAO;
 	}
 
 	/**

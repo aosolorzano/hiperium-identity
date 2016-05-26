@@ -31,6 +31,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.hiperium.commons.client.dto.HomeCredentialDTO;
 import com.hiperium.commons.client.exception.InformationException;
 import com.hiperium.commons.services.exception.PropertyValidationException;
@@ -168,7 +170,7 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 	@Path(IdentityRestfulPath.IS_USER_LOGGED_IN)
 	public Response isUserLoggedIn() throws WebApplicationException {
 		this.log.debug("isUserLoggedIn - BEGIN");
-		if(!this.authenticationBO.isUserLoggedIn(super.getTokenId())) {
+		if(StringUtils.isBlank(super.getTokenId()) || !this.authenticationBO.isUserLoggedIn(super.getTokenId())) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isUserLoggedIn - END");
@@ -185,7 +187,7 @@ public class AuthenticationResource extends GenericResource<UserResponseDTO> {
 	@Path(IdentityRestfulPath.IS_HOME_LOGGED_IN)
 	public Response isHomeLoggedIn() throws WebApplicationException {
 		this.log.debug("isHomeLoggedIn - BEGIN");
-		if(!this.authenticationBO.isHomeLoggedIn(super.getTokenId())) {
+		if(StringUtils.isBlank(super.getTokenId()) || !this.authenticationBO.isUserLoggedIn(super.getTokenId())) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 		this.log.debug("isHomeLoggedIn - END");

@@ -86,16 +86,16 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<!-- Deploy the project in the follow Public Nexus Repository. -->
+	<!-- Deploy the project in the follow Nexus Public Repository. -->
 	<distributionManagement>
 		<repository>
 			<id>hiperium</id>
-			<name>Hiperium Releases</name>
+			<name>Hiperium Project Releases</name>
 			<url>http://repository-hiperium.rhcloud.com/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>hiperium</id>
-			<name>Hiperium Snapshots</name>
+			<name>Hiperium Project Snapshots</name>
 			<url>http://repository-hiperium.rhcloud.com/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -195,7 +195,13 @@
 			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Import the Javax Validation API provided in WildFly -->
+		<!-- Import the MAIL API provided in WildFly -->
+		<dependency>
+      		<groupId>com.sun.mail</groupId>
+      		<artifactId>javax.mail</artifactId>
+      		<scope>provided</scope>
+    	</dependency>
+		<!-- Import the JAVAX Validation API provided in WildFly -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>

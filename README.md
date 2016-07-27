@@ -15,19 +15,30 @@ The Hiperium Security is a microservice of the hiperium Project for the Internet
 System requirements
 -------------------
 
-The application this project produces is designed to be run on Red Hat JBoss Wildfly 10 or later.
+The application this project produces is designed to be run on Red Hat JBoss Wildfly 10 or later on Docker image.
 
-All you need to build this project is Java 8.0 (Java SDK 1.8) or later, Maven 3.0 or later.
+All you need to build this project is Java 8.0 (Java SDK 1.8) or later, Maven 3.0 or later, and Docker 1.10 or later.
 
 
-Start the JBoss Wildfly Server
--------------------------
+Docker Image
+-------------------
 
-1. Open a command prompt and navigate to the root of the JBoss Wildfly directory.
-2. The following shows the command line to start the server:
+This repository contains the instructions needed to create a docker image based on the Hiperium Identity Service.
 
-        For Linux:   JBOSS_HOME/bin/standalone.sh --server-config=standalone.xml
-        For Windows: JBOSS_HOME\bin\standalone.bat --server-config=standalone.xml
+
+Dependencies
+-------------------
+
+Docker Engine
+
+
+Deploying
+-------------------
+
+Execute the following commands to run the docker image in your host computer:
+
+* docker pull hiperium/hiperium-identity
+* docker run -it -d hiperium/hiperium-identity
 
 
 Access the application 

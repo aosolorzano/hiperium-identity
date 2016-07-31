@@ -29,10 +29,6 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
-
 import com.datastax.driver.core.Cluster;
 import com.hiperium.commons.client.gson.GsonConverterUtil;
 import com.hiperium.commons.services.logger.HiperiumLogger;
@@ -52,18 +48,10 @@ public class ConfigurationBean {
 	/** The LOGGER property for logger messages. */
 	private static final HiperiumLogger LOGGER = HiperiumLogger.getLogger(ConfigurationBean.class);
 	
-	/** The property ZK_HOST. */
-	private static final String ZK_HOST = "apache.zookeeper.host";
-	
 	/** The property SESSION_MAP_NAME. */
 	public static final String SESSION_MAP_NAME = "httpSessionsMap";
 	/** The property SESSION_VALUE_NAME. */
 	public static final String SESSION_VALUE_NAME = "sessionRegisterObject";
-	
-	/** The property SERVER_PORT with value hiperium.server.port. */
-	public static final String SERVER_PORT = "hiperium.server.port";
-	/** The property SERVER_HOST with value hiperium.server.host. */
-	public static final String SERVER_HOST = "hiperium.server.host";
 	
 	/** The property CASSANDRA_PORT with value apache.cassandra.port. */
 	public static final String CASSANDRA_PORT = "apache.cassandra.port";
@@ -80,9 +68,6 @@ public class ConfigurationBean {
 	/** Cassandra Cluster. */
 	private Cluster cluster;
 	
-	/** The property client. */
-	private CuratorFramework client;
-	
 	/**
 	 * Class initialization.
 	 */
@@ -95,31 +80,15 @@ public class ConfigurationBean {
 	}
 
 	/**
-	 * Searches for the property with the specified key in this resource object.
-	 * The method returns null if the property is not found.
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public static String getPropertyValue(String key) {
-		return PROPERTIES.getProperty(key);
-	}
-
-	/**
 	 * Component initialization.
 	 */
 	@PostConstruct
 	public void init() {
 		LOGGER.debug("init() - START");
 		// CONNECT TO CASSANDRA CLUSTER
-		this.cluster = Cluster.builder().addContactPoint(getPropertyValue(CASSANDRA_HOST))
-				.withPort(Integer.parseInt(getPropertyValue(CASSANDRA_PORT)))
+		this.cluster = Cluster.builder().addContactPoint(PROPERTIES.getProperty(CASSANDRA_HOST))
+				.withPort(Integer.parseInt(PROPERTIES.getProperty(CASSANDRA_PORT)))
 				.build();
-		// START CURATOR CLIENT
-		this.client = CuratorFrameworkFactory.newClient(
-				getPropertyValue(ZK_HOST), 
-				new ExponentialBackoffRetry(1000, 3));
-		this.client.start();
 		LOGGER.debug("init() - END");
 	}
 	
@@ -133,16 +102,6 @@ public class ConfigurationBean {
 		return this.entityManager;
 	}
 	
-	/**
-	 * 
-	 * @param injectionPoint
-	 * @return the client
-	 */
-	@Produces
-	public CuratorFramework getClient(InjectionPoint injectionPoint) {
-		return this.client;
-	}
-
 	/**
 	 * 
 	 * @param injectionPoint
